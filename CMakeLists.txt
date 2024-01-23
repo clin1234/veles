@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.26)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 # HACK: An ugly hack to provide default compilation type.
@@ -11,19 +12,18 @@ options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
 RelWithDebInfo MinSizeRel.")
 endif()
 
+#[[
 if(APPLE)
   set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10" CACHE STRING "Minimum macOS deployment version")
 endif()
+]]
 
 project(VELES C CXX)
-if(WIN32)
-  if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+#[[
+  if(WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 4)
     message(FATAL_ERROR "Windows 32-bit is not supported due to performance problems in msgpack")
   endif()
-  cmake_minimum_required(VERSION 3.10.0)
-else()
-  cmake_minimum_required(VERSION 3.1.0)
-endif()
+]]
 
 include("cmake/googletest.cmake")
 include("cmake/qt.cmake")
@@ -38,15 +38,15 @@ if(MINGW)
   # MinGW is not supported because of C++14 problems (and many others).
   message(FATAL_ERROR "MinGW is not supported, use MSVC on Windows")
 endif()
-set(CMAKE_CXX_STANDARD 14) # Use C++14
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
 set(CMAKE_INSTALL_RPATH ".")
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")  # All warnings
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")  # For clang-tidy
-  set(ADDITIONAL_LINK_LIBRARIES "pthread")
+if(CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")  # No warnings
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++23")  # For clang-tidy
+  #set(ADDITIONAL_LINK_LIBRARIES "pthread")
 endif()
 
 # FreeBSD support
@@ -66,7 +66,7 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP ")
 endif()
 if(APPLE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")  # For clang-tidy
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++23")  # For clang-tidy
 endif()
 
 if(WIN32)
@@ -352,9 +352,9 @@ add_executable(main_exe
 
 qt5_use_modules(veles_base Core Gui Widgets Network)
 
-target_link_libraries(main_exe veles_base Qt5::Widgets ${ZLIB_LIBRARIES} ${ADDITIONAL_LINK_LIBRARIES})
+target_link_libraries(main_exe PRIVATE veles_base msgpack-cxx ZLIB::ZLIB OpenSSL::SSL OpenSSL::Crypto ${ADDITIONAL_LINK_LIBRARIES})
 set_target_properties(main_exe PROPERTIES OUTPUT_NAME "veles")
-add_dependencies(main_exe openssl zlib msgpack-c)
+#add_dependencies(main_exe msgpack-cxx)
 
 if(GTEST_FOUND AND GMOCK_FOUND)
   include_directories(${GTEST_INCLUDE_DIRS} ${GMOCK_INCLUDE_DIRS})
@@ -436,14 +436,12 @@ if(CLANG_TIDY)
   file(GLOB_RECURSE LINT_ALL_SOURCE_FILES "${SRC_DIR}/*.cc" "${TEST_DIR}/*.cc")
 
   # Don't lint kaitai-generated code, it contains too many issues.
-  # TODO(mkow): Use FILTER after moving to CMake >= 3.6 (not supported in
-  # Ubuntu 16.04 LTS).
-  # list(FILTER LINT_ALL_SOURCE_FILES EXCLUDE REGEX ".*/kaitai/.*")
-  foreach(LINT_SRC_FILE ${LINT_ALL_SOURCE_FILES})
-    if(LINT_SRC_FILE MATCHES ".*/kaitai/.*")
-      list(REMOVE_ITEM LINT_ALL_SOURCE_FILES ${LINT_SRC_FILE})
-    endif()
-  endforeach()
+  list(FILTER LINT_ALL_SOURCE_FILES EXCLUDE REGEX ".*/kaitai/.*")
+  #foreach(LINT_SRC_FILE ${LINT_ALL_SOURCE_FILES})
+  #  if(LINT_SRC_FILE MATCHES ".*/kaitai/.*")
+  #    list(REMOVE_ITEM LINT_ALL_SOURCE_FILES ${LINT_SRC_FILE})
+  #  endif()
+  #endforeach()
 
   # Get includes from the main file.
   get_property(LINT_INC_DIRS TARGET main_exe PROPERTY INCLUDE_DIRECTORIES)
@@ -452,13 +450,12 @@ if(CLANG_TIDY)
 
   if(APPLE)
     # macOS hack - remove surplus include directories
-    # TODO(mkow): Use FILTER (requires CMake >= 3.6):
-    # list(FILTER LINT_INC_DIRS EXCLUDE REGEX "Qt[^/]+\\.framework$")
-    foreach(LINT_INCLUDE_FILE ${LINT_INC_DIRS})
-      if(LINT_INCLUDE_FILE MATCHES "Qt[^/]+\\.framework$")
-        list(REMOVE_ITEM LINT_INC_DIRS ${LINT_INCLUDE_FILE})
-      endif()
-    endforeach()
+    list(FILTER LINT_INC_DIRS EXCLUDE REGEX "Qt[^/]+\\.framework$")
+    #foreach(LINT_INCLUDE_FILE ${LINT_INC_DIRS})
+    #  if(LINT_INCLUDE_FILE MATCHES "Qt[^/]+\\.framework$")
+    #    list(REMOVE_ITEM LINT_INC_DIRS ${LINT_INCLUDE_FILE})
+    #  endif()
+    #endforeach()
   endif()
 
   # Remove duplicates.
@@ -466,17 +463,17 @@ if(CLANG_TIDY)
 
   # Use this hack, so that cmake will not escape space characters when passing
   # the list to COMMAND, for example by using "-I$<JOIN:${LINT_INC_DIRS}, -I>"
-  string(REPLACE ";" ";-I" LINT_INCLUDES "${LINT_INC_DIRS}")
+  #string(REPLACE ";" ";-I" LINT_INCLUDES "${LINT_INC_DIRS}")
 
-  message(STATUS "clang-tidy includes: -I${LINT_INCLUDES} -I${CMAKE_BINARY_DIR} -I${PROJECT_SOURCE_DIR}")
+  #message(STATUS "clang-tidy includes: -I${LINT_INCLUDES} -I${CMAKE_BINARY_DIR} -I${PROJECT_SOURCE_DIR}")
   # Parse CMAKE_CXX_FLAGS to list, so spaces will not be escaped in COMMANDs.
-  separate_arguments(LINT_CXX_FLAGS UNIX_COMMAND ${CMAKE_CXX_FLAGS})
+  #separate_arguments(LINT_CXX_FLAGS UNIX_COMMAND ${CMAKE_CXX_FLAGS})
 
   # As an alternative - we could use:
-  #   list(APPEND LINT_CHECKS "google-*")
-  #   list(APPEND LINT_CHECKS "performance-*")
-  #   string(REPLACE ";" "," LINT_CHECKS_STR "${LINT_CHECKS}")
-  #   set(CMAKE_CXX_CLANG_TIDY clang-tidy;-style=google;-checks=${LINT_CHECKS_STR}")
+     list(APPEND LINT_CHECKS "google-*")
+     list(APPEND LINT_CHECKS "performance-*")
+     string(REPLACE ";" "," LINT_CHECKS_STR "${LINT_CHECKS}")
+     set(CMAKE_CXX_CLANG_TIDY clang-tidy;-style=google;-checks=${LINT_CHECKS_STR})
   # and then all the magic should happen at compile time.
   # CMake 3.6+ is required for this (Ubuntu 18.04 LTS).
 

@@ -16,7 +16,6 @@ from __future__ import unicode_literals
 
 import unittest
 
-import six
 
 from veles.data.bindata import BinData
 from veles.schema import fields
@@ -114,7 +113,7 @@ class TestModel(unittest.TestCase):
         da = a.dump()
         self.assertEqual(da, {'a': True})
         for x in da:
-            self.assertIsInstance(x, six.text_type)
+            self.assertIsInstance(x, str)
 
         b = Zlew(b=[{'a': BinData(8, []), 'b': BinData(12, [0x123])}, {}])
         db = b.dump()
@@ -128,7 +127,7 @@ class TestModel(unittest.TestCase):
             ]
         })
         for x in db:
-            self.assertIsInstance(x, six.text_type)
+            self.assertIsInstance(x, str)
 
         c = TurboZlew(b=[{}], c={b'abc', b'def'}, d=Piwo(a=False), e=7)
         dc = c.dump()

@@ -14,8 +14,6 @@
 
 import operator
 
-from six.moves import range
-
 from .bindata import BinData
 
 try:

@@ -16,6 +16,8 @@ else()
   find_package(GMock)
 endif()
 
+#[[
 if(NOT MSVC)
   set(GTEST_LIBRARIES ${GTEST_LIBRARIES} pthread m)
 endif()
+#]]

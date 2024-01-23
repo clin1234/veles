@@ -15,21 +15,26 @@ add_custom_command(
 )
 
 if(WIN32)
+#[[
   if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
     set(BASEPYEXE py.exe -3)
   else()
     set(BASEPYEXE py.exe -3.6-32)
   endif()
+#]]
+  set(BASEBYEXE py.exe -3)
   set(SERVER_PYTHON_DIR "${SERVER_DIR}/python")
   set(SERVER_DIR_DESTINATION "/")
   file(TO_NATIVE_PATH ${SERVER_PYTHON_DIR} SERVER_PYTHON_DIR_NATIVE)
 
+#[[
   if(NOT EMBED_PYTHON_ARCHIVE_PATH)
     set(EMBED_PYTHON_URL "https://www.python.org/ftp/python/3.6.1/python-3.6.1-embed-win32.zip")
     set(EMBED_PYTHON_ARCHIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/python-3.6.1-embed-win32.zip")
     set(EMBED_PYTHON_SHA256 "1b1adada30ccaf8b001d83f3008408df6bfc98beb2c5e42cd341cbe484386a50")
     file(DOWNLOAD ${EMBED_PYTHON_URL} ${EMBED_PYTHON_ARCHIVE_PATH} EXPECTED_HASH SHA256=${EMBED_PYTHON_SHA256})
   endif()
+#]]
 
   # assume that at least six is present in python/requirements.txt
   set(SERVER_OUTPUT_REQUIRMENTS_FILE "${SERVER_PYTHON_DIR}/six.py")
@@ -42,12 +47,14 @@ if(WIN32)
       COMMENT "Installing veles python lib requirements"
   )
 
+#[[
   add_custom_command(
       OUTPUT ${SERVER_OUTPUT_EMBED_PYTHON_FILE}
       COMMAND ${CMAKE_COMMAND} -E tar xzf ${EMBED_PYTHON_ARCHIVE_PATH}
       WORKING_DIRECTORY ${SERVER_PYTHON_DIR}
       COMMENT "Installing server embed python"
   )
+#]]
 
   add_custom_command(
       OUTPUT ${SERVER_OUTPUT_VELES_LIB_FILE}

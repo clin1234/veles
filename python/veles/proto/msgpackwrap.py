@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import msgpack
-import six
 
 from veles.data.bindata import BinData
 from veles.compatibility import pep487

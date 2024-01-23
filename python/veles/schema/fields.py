@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import six
-
 from veles.compatibility import pep487
 from veles.proto.exceptions import SchemaError
 from veles.data import bindata
@@ -106,9 +104,9 @@ class Empty(Field):
 class Integer(Field):
     def __init__(self, optional=False, default=None,
                  minimum=None, maximum=None):
-        if not isinstance(minimum, six.integer_types) and minimum is not None:
+        if not isinstance(minimum, int) and minimum is not None:
             raise TypeError('minimum must be an int')
-        if not isinstance(maximum, six.integer_types) and maximum is not None:
+        if not isinstance(maximum, int) and maximum is not None:
             raise TypeError('maximum must be an int or None')
         if minimum is not None and maximum is not None and minimum > maximum:
             raise ValueError('minimum must be less than maximum')
@@ -117,7 +115,7 @@ class Integer(Field):
         super(Integer, self).__init__(optional, default)
 
     def _validate(self, value):
-        if not isinstance(value, six.integer_types) or isinstance(value, bool):
+        if not isinstance(value, int) or isinstance(value, bool):
             raise SchemaError('Attribute {} has to be int type.'.format(
                 self.name))
         if self.minimum is not None and value < self.minimum:
@@ -137,7 +135,7 @@ class Integer(Field):
 class UnsignedInteger(Integer):
     def __init__(self, optional=False, default=None,
                  minimum=0, maximum=None):
-        if not isinstance(minimum, six.integer_types):
+        if not isinstance(minimum, int):
             raise TypeError('minimum must be an int')
         if minimum < 0:
             raise ValueError('UnsignedInteger minimum must not be negative')
@@ -159,9 +157,9 @@ UINT64_MAX = 2**64-1
 class SmallInteger(Integer):
     def __init__(self, optional=False, default=None,
                  minimum=INT64_MIN, maximum=INT64_MAX):
-        if not isinstance(minimum, six.integer_types):
+        if not isinstance(minimum, int):
             raise TypeError('minimum must be an int')
-        if not isinstance(maximum, six.integer_types):
+        if not isinstance(maximum, int):
             raise TypeError('maximum must be an int')
         if minimum < INT64_MIN:
             raise ValueError('SmallInteger minimum too small')
@@ -179,9 +177,9 @@ class SmallInteger(Integer):
 class SmallUnsignedInteger(Integer):
     def __init__(self, optional=False, default=None,
                  minimum=0, maximum=UINT64_MAX):
-        if not isinstance(minimum, six.integer_types):
+        if not isinstance(minimum, int):
             raise TypeError('minimum must be an int')
-        if not isinstance(maximum, six.integer_types):
+        if not isinstance(maximum, int):
             raise TypeError('maximum must be an int')
         if minimum < 0:
             raise ValueError('SmallUnsignedInteger minimum too small')
@@ -216,7 +214,7 @@ class Float(Field):
 
 
 class String(Field):
-    value_type = six.text_type
+    value_type = str
 
     def cpp_type(self):
         # TODO default value from self.default
@@ -374,14 +372,14 @@ class Enum(Field):
         super(Enum, self).__init__(optional, default)
 
     def _load(self, value):
-        if not isinstance(value, six.text_type):
+        if not isinstance(value, str):
             raise SchemaError('serialized enum value has to be a string')
         if value not in self.value_type.__members__:
             raise SchemaError('unrecognized enum value {}'.format(value))
         return self.value_type[value]
 
     def _dump(self, value):
-        return six.text_type(value.name)
+        return str(value.name)
 
     def cpp_type(self):
         return (self.value_type.cpp_type()[1], True,

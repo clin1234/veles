@@ -10,3 +10,5 @@ CMakeSettings.json
 *.vsp
 *.vspx
 *.psess
+
+vcpkg_installed/

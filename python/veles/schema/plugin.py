@@ -12,14 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import six
 
 from veles.schema import fields
 
 
 class MethodSignature:
     def __init__(self, name, params, result):
-        if not isinstance(name, six.text_type):
+        if not isinstance(name, str):
             raise TypeError("name must be str")
         if not isinstance(params, fields.Field):
             raise TypeError("params must be a field")
@@ -32,7 +31,7 @@ class MethodSignature:
 
 class QuerySignature:
     def __init__(self, name, params, result):
-        if not isinstance(name, six.text_type):
+        if not isinstance(name, str):
             raise TypeError("name must be str")
         if not isinstance(params, fields.Field):
             raise TypeError("params must be a field")
@@ -45,7 +44,7 @@ class QuerySignature:
 
 class BroadcastSignature:
     def __init__(self, name, params, result):
-        if not isinstance(name, six.text_type):
+        if not isinstance(name, str):
             raise TypeError("name must be str")
         if not isinstance(params, fields.Field):
             raise TypeError("params must be a field")

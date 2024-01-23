@@ -15,7 +15,6 @@
 from __future__ import unicode_literals
 
 import unittest
-import six
 
 from veles.data.bindata import BinData
 from veles.schema.nodeid import NodeID
@@ -457,7 +456,7 @@ class TestFields(unittest.TestCase):
         with self.assertRaises(SchemaError):
             a.validate('zlewzlewzlew')
         self.assertEqual(a.dump(ZlewType.ZLEW), 'ZLEW')
-        self.assertIsInstance(a.dump(ZlewType.ZLEW), six.text_type)
+        self.assertIsInstance(a.dump(ZlewType.ZLEW), str)
         self.assertIs(a.load('TURBOZLEW'), ZlewType.TURBOZLEW)
         with self.assertRaises(SchemaError):
             a.load(2)
@@ -482,16 +481,16 @@ class TestFields(unittest.TestCase):
             'message': 'def',
         })
         for k, v in de.items():
-            self.assertIsInstance(k, six.text_type)
-            self.assertIsInstance(v, six.text_type)
+            self.assertIsInstance(k, str)
+            self.assertIsInstance(v, str)
         de = a.dump(SchemaError())
         self.assertEqual(de, {
             'type': 'schema_error',
             'message': SchemaError.msg,
         })
         for k, v in de.items():
-            self.assertIsInstance(k, six.text_type)
-            self.assertIsInstance(v, six.text_type)
+            self.assertIsInstance(k, str)
+            self.assertIsInstance(v, str)
         exc = a.load({
             'type': 'abc',
             'message': 'def',

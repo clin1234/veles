@@ -16,7 +16,6 @@ from __future__ import unicode_literals
 
 import unittest
 
-import six
 
 from veles.schema import fields
 from veles.schema.model import PolymorphicModel
@@ -87,7 +86,7 @@ class TestModel(unittest.TestCase):
             'zlew', 'turbozlew', 'dwuzlew', 'pietrozlew',
         })
         for x in BaseZlew.object_types:
-            self.assertIsInstance(x, six.text_type)
+            self.assertIsInstance(x, str)
 
         class BaseAbc(PolymorphicModel):
             pass
@@ -122,13 +121,13 @@ class TestModel(unittest.TestCase):
         dc = c.dump()
         dd = d.dump()
         for x in da:
-            self.assertIsInstance(x, six.text_type)
+            self.assertIsInstance(x, str)
         for x in db:
-            self.assertIsInstance(x, six.text_type)
+            self.assertIsInstance(x, str)
         for x in dc:
-            self.assertIsInstance(x, six.text_type)
+            self.assertIsInstance(x, str)
         for x in dd:
-            self.assertIsInstance(x, six.text_type)
+            self.assertIsInstance(x, str)
         self.assertEqual(da, {
             'object_type': 'zlew',
             'imie': None,

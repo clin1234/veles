@@ -3,6 +3,7 @@ find_package(ZLIB)
 
 if(ZLIB_FOUND)
   # Only to satisfy dependencies
+  
   add_custom_target(zlib)
 else()
   include(ExternalProject)
@@ -49,4 +50,5 @@ else()
   endif()
 endif()
 
+find_path(ZLIB_INCLUDE_DIRS zlib.h)
 include_directories(${ZLIB_INCLUDE_DIRS})

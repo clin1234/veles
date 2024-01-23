@@ -14,8 +14,6 @@
 
 import operator
 
-from six.moves import range
-
 from veles.compatibility.int_bytes import int_to_bytes, int_from_bytes
 
 

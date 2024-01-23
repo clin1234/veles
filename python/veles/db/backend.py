@@ -17,7 +17,6 @@ import operator
 import os
 import sqlite3
 
-import six
 
 from veles.proto import msgpackwrap
 from veles.schema.nodeid import NodeID
@@ -221,10 +220,10 @@ class DbBackend:
     def set_pos(self, id, pos_start, pos_end, commit=True):
         if not isinstance(id, NodeID):
             raise TypeError('node id has wrong type')
-        if (not isinstance(pos_start, six.integer_types)
+        if (not isinstance(pos_start, int)
                 and pos_start is not None):
             raise TypeError('pos_start has to be an int')
-        if (not isinstance(pos_end, six.integer_types)
+        if (not isinstance(pos_end, int)
                 and pos_end is not None):
             raise TypeError('pos_end has to be an int')
         raw_id = buffer(id.bytes)
@@ -263,7 +262,7 @@ class DbBackend:
     def add_tag(self, id, tag, commit=True):
         if not isinstance(id, NodeID):
             raise TypeError('node id has wrong type')
-        if not isinstance(tag, six.text_type):
+        if not isinstance(tag, str):
             raise TypeError('tag is not a string')
         raw_id = buffer(id.bytes)
         c = self.db.cursor()
@@ -280,7 +279,7 @@ class DbBackend:
     def del_tag(self, id, tag, commit=True):
         if not isinstance(id, NodeID):
             raise TypeError('node id has wrong type')
-        if not isinstance(tag, six.text_type):
+        if not isinstance(tag, str):
             raise TypeError('tag is not a string')
         raw_id = buffer(id.bytes)
         c = self.db.cursor()
@@ -294,7 +293,7 @@ class DbBackend:
     def set_attr(self, id, key, val, commit=True):
         if not isinstance(id, NodeID):
             raise TypeError('node id has wrong type')
-        if not isinstance(key, six.text_type):
+        if not isinstance(key, str):
             raise TypeError('key is not a string')
         raw_id = buffer(id.bytes)
         c = self.db.cursor()
@@ -311,7 +310,7 @@ class DbBackend:
     def get_data(self, id, key):
         if not isinstance(id, NodeID):
             raise TypeError('node id has wrong type')
-        if not isinstance(key, six.text_type):
+        if not isinstance(key, str):
             raise TypeError('key is not a string')
         raw_id = buffer(id.bytes)
         c = self.db.cursor()
@@ -327,7 +326,7 @@ class DbBackend:
     def set_data(self, id, key, data, commit=True):
         if not isinstance(id, NodeID):
             raise TypeError('node id has wrong type')
-        if not isinstance(key, six.text_type):
+        if not isinstance(key, str):
             raise TypeError('key is not a string')
         raw_id = buffer(id.bytes)
         c = self.db.cursor()
@@ -351,7 +350,7 @@ class DbBackend:
             raise ValueError('start must not be negative')
         if end is not None and end < start:
             raise ValueError('end must be >= start')
-        if not isinstance(key, six.text_type):
+        if not isinstance(key, str):
             raise TypeError('key is not a string')
         if start == end:
             return b''
@@ -384,7 +383,7 @@ class DbBackend:
         start = operator.index(start)
         if start < 0:
             raise ValueError('start must not be negative')
-        if not isinstance(key, six.text_type):
+        if not isinstance(key, str):
             raise TypeError('key is not a string')
         if not isinstance(truncate, bool):
             raise TypeError('truncate is not a bool')
@@ -505,7 +504,7 @@ class DbBackend:
             """
             args = (buffer(parent.bytes), )
         for tag in tags:
-            if not isinstance(tag, six.text_type):
+            if not isinstance(tag, str):
                 raise TypeError('tag is not a string')
             stmt += """ AND EXISTS (
                 SELECT 1 FROM node_tag

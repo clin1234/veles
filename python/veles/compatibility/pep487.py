@@ -16,51 +16,5 @@ import sys
 import types
 from collections import OrderedDict
 
-import six
-
-
-if sys.version_info < (3, 6):
-    class NewType(type):
-        def __init__(self, name, bases, ns, **kwargs):
-            super(NewType, self).__init__(name, bases, ns)
-
-        def __new__(cls, *args, **kwargs):
-            if len(args) != 3:
-                return super(NewType, cls).__new__(cls, *args)
-
-            name, bases, ns = args
-
-            init = ns.get('__init_subclass__')
-            if isinstance(init, types.FunctionType):
-                ns['__init_subclass__'] = classmethod(init)
-
-            if six.PY3:
-                ns['_order'] = list(ns)
-
-            self = super(NewType, cls).__new__(cls, name, bases, ns)
-
-            for k, v in self.__dict__.items():
-                func = getattr(v, '__set_name__', None)
-                if func is not None:
-                    func(self, k)
-
-            init = getattr(super(self, self), '__init_subclass__', None)
-            if init is not None:
-                init(**kwargs)
-
-            return self
-
-        @classmethod
-        def __prepare__(metacls, name, bases):
-            # Never, ever depend on it apart from code generation which must
-            # be run on Python3
-            return OrderedDict()
-
-    class NewObject(six.with_metaclass(NewType, object)):
-        @classmethod
-        def __init_subclass__(cls, **kwargs):
-            pass
-
-else:
-    NewType = type
-    NewObject = object
+NewType = type
+NewObject = object

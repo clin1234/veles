@@ -1,3 +1,6 @@
+find_package(OpenSSL)
+
+#[[
 if(WIN32)
   if(NOT OPENSSL_DLL_DIR)
     FIND_PACKAGE(Perl REQUIRED)
@@ -76,3 +79,4 @@ if(WIN32)
 else()
   add_custom_target(openssl)
 endif()
+#]]

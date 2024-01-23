@@ -19,14 +19,10 @@ import importlib
 import inspect
 from os import path
 
-import six
-
 from veles.schema import enumeration, model
 
 
 def generate_cpp_code():
-    if six.PY2:
-        raise RuntimeError('C++ code can only be generated on Python 3.x')
     parser = argparse.ArgumentParser()
     parser.add_argument('destination')
     parser.add_argument('source_modules', nargs='+')

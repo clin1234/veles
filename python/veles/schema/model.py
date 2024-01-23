@@ -15,8 +15,6 @@
 from copy import copy
 import sys
 
-import six
-
 from veles.compatibility import pep487
 from veles.proto.exceptions import SchemaError
 from . import fields
@@ -53,7 +51,7 @@ class Model(pep487.NewObject):
     def dump(self):
         val = {}
         for field in self.fields:
-            val[six.text_type(field.name)] = field.dump(field.__get__(self))
+            val[str(field.name)] = field.dump(field.__get__(self))
         return val
 
     @classmethod
@@ -311,7 +309,7 @@ class PolymorphicModel(Model):
         if not hasattr(cls, 'object_types'):
             cls.object_types = {}
         elif cls.object_type is not None:
-            if not isinstance(cls.object_type, six.text_type):
+            if not isinstance(cls.object_type, str):
                 raise TypeError('object_type needs to be str')
             if cls.object_type in cls.object_types:
                 raise TypeError(

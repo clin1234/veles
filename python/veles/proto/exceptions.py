@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import six
-
 from veles.compatibility.pep487 import NewObject
 
 
@@ -48,16 +46,16 @@ class VelesException(Exception, NewObject):
             raise SchemaError('serialized exception must be a dict')
         if set(value) != {'type', 'message'}:
             raise SchemaError('wrong set of keys in serialized exception')
-        if not isinstance(value['type'], six.text_type):
+        if not isinstance(value['type'], str):
             raise SchemaError('exception type must be a string')
-        if not isinstance(value['message'], six.text_type):
+        if not isinstance(value['message'], str):
             raise SchemaError('exception message must be a string')
         return VelesException(value['type'], value['message'])
 
     def dump(self):
         return {
-            u'type': six.text_type(self.code),
-            u'message': six.text_type(self.msg),
+            u'type': str(self.code),
+            u'message': str(self.msg),
         }
 
     @classmethod

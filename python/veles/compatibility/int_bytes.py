@@ -12,11 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import six
-
-
 def int_to_bytes(num, size, endian):
-    if not isinstance(num, six.integer_types):
+    if not isinstance(num, int):
         raise TypeError('converted value is not an integer')
     try:
         return num.to_bytes(size, endian)

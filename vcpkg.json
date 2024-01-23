@@ -1,0 +1,12 @@
+{
+	"dependencies": [
+		"gtest",
+		"qt5-base",
+		"zlib",
+		"msgpack",
+		{
+			"name": "qt5-tools",
+			"platform": "windows"
+		}
+	]
+}

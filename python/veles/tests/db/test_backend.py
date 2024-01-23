@@ -18,7 +18,6 @@ import unittest
 import tempfile
 import os.path
 
-import six
 
 from veles.db.backend import DbBackend
 from veles.data.bindata import BinData
@@ -266,7 +265,7 @@ class TestDbBackend(unittest.TestCase):
         self.assertEqual(b, b'\x01\x02\x03')
         self.assertEqual(s, 'abc')
         self.assertIsInstance(b, bytes)
-        self.assertIsInstance(s, six.text_type)
+        self.assertIsInstance(s, str)
         self.assertEqual(n2.attr['list'], [1, 2, 3])
         self.assertEqual(n2.attr['dict'], {'a': 'b', 'c': 'd'})
         self.assertEqual(n2.attr['id'], id2)
@@ -329,7 +328,7 @@ class TestDbBackend(unittest.TestCase):
         self.assertEqual(b, b'\x01\x02\x03')
         self.assertEqual(s, 'abc')
         self.assertIsInstance(b, bytes)
-        self.assertIsInstance(s, six.text_type)
+        self.assertIsInstance(s, str)
         self.assertEqual(db.get_data(node.id, 'list'), [1, 2, 3])
         self.assertEqual(db.get_data(node.id, 'dict'), {'a': 'b', 'c': 'd'})
         self.assertEqual(db.get_data(node.id, 'id'), id2)
