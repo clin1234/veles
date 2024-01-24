@@ -52,7 +52,7 @@ class NCObjectHandle : public dbif::ObjectHandleBase {
   dbif::MethodResultPromise* runMethod(
       const dbif::PMethodRequest& req) override;
   dbif::ObjectType type() const override;
-  bool operator==(const NCObjectHandle& other);
+  friend bool operator==(const NCObjectHandle& lhs, const NCObjectHandle& rhs);
 
  private:
   NCWrapper* nc_;
