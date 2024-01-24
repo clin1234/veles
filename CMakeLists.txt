@@ -34,10 +34,12 @@ include("cmake/server.cmake")
 include("cmake/openssl.cmake")
 
 # Compiler flags
+#[[
 if(MINGW)
   # MinGW is not supported because of C++14 problems (and many others).
   message(FATAL_ERROR "MinGW is not supported, use MSVC on Windows")
 endif()
+#]]
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

@@ -4,14 +4,13 @@
 
 Dependencies:
 
-- `cmake` >= 3.1.0
+- `cmake` >= 3.26.0
 - `zlib`
-- `qt` >= 5.5 ( >= 5.6 is required if you want to rearrange tabs using
-drag&drop)
+- `qt` >= 5.12
 - `Python3.5+`
 - `python3-msgpack`
 - `python3-openssl` or `python3-pyopenssl` (depending on your distro)
-- `OpenSSL` >= 1.0.0, < 1.1.0
+- `OpenSSL` >= 3.0.0
 
 Optional dependencies: (recommended for development)
 - `clang-tidy`
@@ -26,7 +25,7 @@ On Ubuntu it can be done like this:
 ```bash
 apt-get install cmake zlib1g-dev qtbase5-dev g++ python3 python3-venv \
     python3-dev python3-msgpack python3-openssl libffi-dev libssl-dev \
-    clang-tidy-6.0 clang-format-6.0 libclang-common-6.0-dev
+    clang-tidy clang-format libclang-common-dev
 ```
 
 To build:
@@ -64,14 +63,14 @@ $ cmake -D CMAKE_INSTALL_PREFIX:PATH=/usr/local ..
 Python tests dependencies:
 
 - `git`
-- `Python2.7`
+- `Python3`
 - Python packages:
     - `pip`
     - `tox>=2.4.0`
 
 On Ubuntu it can be done like this:
 ```bash
-apt-get install git python2.7 python2.7-dev python3-pip
+apt-get install git python3 python3-dev python3-pip
 pip3 install tox>=2.4.0
 ```
 
@@ -79,28 +78,29 @@ pip3 install tox>=2.4.0
 
 You will need to install the following:
 
-- `Qt` for `msvc2017_64`
-- `Visual Studio 2017` (Community edition is enough; you will need MSVC even
+- `Qt` for `msvc2022_64`
+- `Visual Studio Build Tools` (Community edition is enough; you will need MSVC even
 when using only Qt Creator)
 - `cmake` + `git` (both can be installed with Visual Studio)
-- `perl` (only for building OpenSSL; e.g.
-[Strawberry Perl](http://strawberryperl.com/))
-- `Python3.5+` (you will also need to install dependencies from
+- `Python3.8+` (you will also need to install dependencies from
 `python/requirements.txt`)
+
+Optional: `vcpkg` (install either in manifest or global mode). Downloading Qt 
+separately won't be required.
 
 and add a folder containing `cmake` to `PATH`.
 
 ### Qt Creator
 
 Click `Open Project`, open `CMakeLists.txt` and configure the project for
-`MSVC2017 64bit`. Build the project.
+`MSVC2022 64bit`. Build the project.
 
 In case of problems with perl, set `PERL_EXECUTABLE` in CMake configuration to
 the absolute path of `perl.exe`.
 
-For speeding up further builds see the notes under `Visual Studio 2017` section.
+For speeding up further builds see the notes under `Visual Studio 2022` section.
 
-### Visual Studio 2017
+### Visual Studio 2022
 
 Open the source folder using `File` -> `Open` -> `Folder...` and then open CMake
 settings: `CMake` -> `Change CMake Settings` -> `CMakeLists.txt`.
@@ -111,7 +111,7 @@ Example minimal config:
   "configurations": [
     {
       "name": "x64-Debug",
-      "generator": "Visual Studio 15 2017 Win64",
+      "generator": "Visual Studio 17 2022",
       "configurationType": "Debug",
       "inheritEnvironments": [ "msvc_x64" ],
       "buildRoot": "DRIVE:\\some_path\\veles-build-${name}",
@@ -121,7 +121,7 @@ Example minimal config:
       "variables": [
         {
           "name": "CMAKE_PREFIX_PATH",
-          "value": "C:\\Qt\\5.9.1\\msvc2017_64"
+          "value": "C:\\Qt\\5.12.1\\msvc2022_64"
         },
         {
           "name": "PERL_EXECUTABLE",
@@ -131,7 +131,7 @@ Example minimal config:
     },
     {
       "name": "x64-RelWithDebInfo",
-      "generator": "Visual Studio 15 2017 Win64",
+      "generator": "Visual Studio 17 2022",
       "configurationType": "RelWithDebInfo",
       "inheritEnvironments": [ "msvc_x64" ],
       "buildRoot": "DRIVE:\\some_path\\veles-build-${name}",
@@ -141,7 +141,7 @@ Example minimal config:
       "variables": [
         {
           "name": "CMAKE_PREFIX_PATH",
-          "value": "C:\\Qt\\5.9.1\\msvc2017_64"
+          "value": "C:\\Qt\\5.12.1\\msvc2022_64"
         },
         {
           "name": "PERL_EXECUTABLE",
@@ -165,6 +165,11 @@ used configurations (e.g. `Debug` and `RelWithDebInfo`).
 `veles-build-${name}\prefix\include\`, this time using `ZLIB_INCLUDE_DIR`.
 Repeat for all used configurations.
 
+### Vcpkg
+
+Run `cmake -B <build_dir> -DCMAKE_TOOLCHAIN_FILE=<toolchain_file>`, where
+`<toolchain_file>` is where `scripts/buildsystems/vcpkg.cmake` is located under
+ the directory where you installed `vcpkg`.
 
 ## Additional Info
 
@@ -181,7 +186,7 @@ If you want to run tests you will also need `Google Test`:
 Enabling auto code formatting (build target `format`) and static analysis
 (target `lint`):
 
-1. Install [LLVM 6.0.0](https://releases.llvm.org/download.html#6.0.0).
+1. Install [LLVM](https://releases.llvm.org/download.html).
 2. Set `CLANG_TOOLS_PATH` to a folder containing clang-format and clang-tidy
 (e.g. `C:\Program Files\LLVM\bin`).
 
