@@ -12,9 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-import types
-from collections import OrderedDict
-
 NewType = type
 NewObject = object

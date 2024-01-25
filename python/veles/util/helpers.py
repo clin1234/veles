@@ -81,7 +81,7 @@ def generate_ssl_cert(cert_path, key_path):
 
     cert = crypto.X509()
     cert.get_subject().C = "RE"
-    cert.get_subject().O = "VELES"
+    cert.get_subject().organizationName = "VELES"
     cert.set_serial_number(1000)
     cert.gmtime_adj_notBefore(0)
     cert.gmtime_adj_notAfter(10 * 365 * 24 * 60 * 60)

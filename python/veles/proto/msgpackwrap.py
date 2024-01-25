@@ -40,7 +40,7 @@ class MsgpackWrapper(pep487.NewObject):
         if isinstance(obj, BinData):
             width = int_to_bytes(obj.width, 4, 'little')
             return msgpack.ExtType(EXT_BINDATA, width + obj.raw_data)
-        if isinstance(obj, six.integer_types):
+        if isinstance(obj, int):
             return msgpack.ExtType(EXT_BIGINT, bigint_encode(obj))
         raise TypeError('Object of unknown type {}'.format(obj))
 

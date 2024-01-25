@@ -17,7 +17,6 @@ import operator
 import os
 import sqlite3
 
-
 from veles.proto import msgpackwrap
 from veles.schema.nodeid import NodeID
 from veles.proto.node import Node, PosFilter
@@ -80,9 +79,8 @@ DB_SCHEMA = [
 # - xref support
 # - trigger model
 
-if six.PY3:
-    def buffer(x):
-        return x
+def buffer(x):
+    return x
 
 
 def db_bigint_encode(val):
@@ -456,7 +454,7 @@ class DbBackend:
                     (page - page_first) * DB_BINDATA_PAGE_SIZE:
                     (page - page_first + 1) * DB_BINDATA_PAGE_SIZE
                 ])
-            ) for page in six.moves.range(page_first, page_end)
+            ) for page in range(page_first, page_end)
         ])
 
         # We're done here.
@@ -528,8 +526,7 @@ class DbBackend:
         return {NodeID(bytes(x)) for x, in c.fetchall()}
 
     def begin(self):
-        if six.PY3:
-            assert not self.db.in_transaction
+        assert not self.db.in_transaction
 
     def commit(self):
         self.db.commit()

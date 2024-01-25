@@ -18,7 +18,6 @@ import unittest
 import tempfile
 import os.path
 
-
 from veles.db.backend import DbBackend
 from veles.data.bindata import BinData
 from veles.proto.node import Node

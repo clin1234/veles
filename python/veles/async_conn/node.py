@@ -52,7 +52,7 @@ class AsyncNode:
         async def inner():
             try:
                 self.node = await anode
-            except:
+            except Exception:
                 self.node = None
                 raise
             return self

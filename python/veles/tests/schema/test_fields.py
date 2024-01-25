@@ -33,7 +33,7 @@ class Piwo(object):
         return Piwo()
 
     def __eq__(self, other):
-        return type(self) == type(other)
+        return type(self) is type(other)
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -53,7 +53,7 @@ class Zlew(object):
         return Zlew()
 
     def __eq__(self, other):
-        return type(self) == type(other)
+        return type(self) is type(other)
 
     def __ne__(self, other):
         return not self.__eq__(other)

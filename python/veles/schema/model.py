@@ -244,12 +244,12 @@ it_{0}->second->type() != ObjectType::NIL) {{
 }}
 '''.format(field.name, arg_type, conv_func)
             else:
-                builder += '''  {2}
+                builder += '''  {1}
   b.set_{0}(obj_{0});
 }} else {{
   throw proto::SchemaError("Nonoptional field \
 {0} not found when unpacking");
-}}'''.format(field.name, arg_type, conv_func)
+}}'''.format(field.name, conv_func)
             from_object.append(builder)
         code = '''
 void fromMsgpackObject(const std::shared_ptr<MsgpackObject>& obj,\
@@ -283,7 +283,7 @@ toMsgpackObject(const std::shared_ptr<{0}>& val) {{
         ))
 
     def __eq__(self, other):
-        return type(self) == type(other) and self.__dict__ == other.__dict__
+        return type(self) is type(other) and self.__dict__ == other.__dict__
 
     def __ne__(self, other):
         return not self.__eq__(other)
