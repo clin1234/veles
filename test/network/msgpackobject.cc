@@ -306,7 +306,7 @@ TEST(MsgpackObject, TestUnpack) {
   mo = oh.get();
   unp_obj = std::make_shared<MsgpackObject>(mo);
   EXPECT_EQ(unp_obj->getArray()->size(), 5u);
-  for (auto i : *unp_obj->getArray()) {
+  for (auto& i : *unp_obj->getArray()) {
     EXPECT_EQ(i->getUnsignedInt(), 30u);
   }
 

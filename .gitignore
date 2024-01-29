@@ -2,7 +2,7 @@
 *.swp
 *.vdb
 CMakeLists.txt.user
-build/
+build*/
 
 # Visual Studio files
 .vs

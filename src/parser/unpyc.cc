@@ -423,7 +423,7 @@ void parseCode(const dbif::ObjectHandle& code, const PycVersion& version) {
             break;
           case PYC_OP_JREL:
             arg += parser.pos();
-          // fallthru
+            [[fallthrough]];
           case PYC_OP_NUM:
           default:
             parser.setComment(

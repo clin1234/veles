@@ -276,7 +276,7 @@ class BinData {
   void setElement64(uint64_t val) { setElement64(0, val); }
 
   /** Create string of coma separated elements represented as hex values */
-  QString toString(size_t maxElements = 0);
+  QString toString(size_t maxElements = 0) const;
 
   /** A helper function copying a range of bits from one arbitrarily-sized
       little-endian element to another.  `dst` and `src` are pointers to the

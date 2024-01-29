@@ -42,7 +42,7 @@ class MockSampler : public ISampler {
 
 class MockCallback {
  public:
-  int getCallCount();
+  int getCallCount() const;
   void resetCallCount();
   void operator()();
 

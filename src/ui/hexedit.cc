@@ -504,7 +504,7 @@ void HexEdit::createAction(util::settings::shortcuts::ShortcutType type,
 // Returns where a border around a byte should be drawn.  The result assumes the
 // same semantics as used in QRect methods (e.g. QRect::bottom).  Rectangles
 // returned by this function are overlapping by exactly one pixel.
-QRect HexEdit::bytePosToRect(qint64 pos, bool ascii, qint64 char_pos) {
+QRect HexEdit::bytePosToRect(qint64 pos, bool ascii, qint64 char_pos) const {
   qint64 columnNum = pos % bytesPerRow_;
   qint64 rowNum = pos / bytesPerRow_ - startRow_;
 
@@ -529,11 +529,11 @@ QRect HexEdit::bytePosToRect(qint64 pos, bool ascii, qint64 char_pos) {
           charHeight_ + 1};
 }
 
-qint64 HexEdit::pointToRowNum(QPoint pos) {
+qint64 HexEdit::pointToRowNum(QPoint pos) const {
   return (pos.y() - verticalByteBorderMargin_) / charHeight_ + startRow_;
 }
 
-qint64 HexEdit::pointToColumnNum(QPoint pos) {
+qint64 HexEdit::pointToColumnNum(QPoint pos) const {
   qint64 columnNum = 0;
   qint64 realPosX = pos.x() + startPosX_;
 
@@ -620,23 +620,23 @@ void HexEdit::discardChanges() {
   viewport()->update();
 }
 
-qint64 HexEdit::selectionStart() {
+qint64 HexEdit::selectionStart() const {
   if (selection_size_ < 0) {
     return current_position_ + selection_size_ + 1;
   }
   return current_position_;
 }
 
-qint64 HexEdit::selectionEnd() {
+qint64 HexEdit::selectionEnd() const {
   if (selection_size_ < 0) {
     return current_position_ + 1;
   }
   return current_position_ + selection_size_;
 }
 
-qint64 HexEdit::selectionSize() { return qAbs(selection_size_); }
+qint64 HexEdit::selectionSize() const { return qAbs(selection_size_); }
 
-QString HexEdit::hexRepresentationFromByte(uint64_t byte_val) {
+QString HexEdit::hexRepresentationFromByte(uint64_t byte_val) const {
   // This seems to be much faster than QString::number() + rightJustified()
   // (according to profiling results).
   auto res = QString(byteCharsCount_, '0');
@@ -695,7 +695,7 @@ void HexEdit::drawBorder(qint64 start, qint64 size, bool asciiArea,
                          bool dotted) {
   QPainter painter(viewport());
 
-  auto oldPen = painter.pen();
+  auto& oldPen = painter.pen();
   auto newPen = QPen(oldPen.color());
   if (dotted) {
     newPen.setStyle(Qt::DashLine);
@@ -772,7 +772,7 @@ void HexEdit::getRangeFromIndex(const QModelIndex& index, qint64* start,
 
 void HexEdit::paintEvent(QPaintEvent* event) {
   QPainter painter(viewport());
-  auto invalidated_rect = event->rect();
+  auto& invalidated_rect = event->rect();
 
   auto old_pen = painter.pen();
   painter.setPen(QPen(viewport()->palette().color(QPalette::Shadow)));
@@ -916,7 +916,7 @@ void HexEdit::paintEvent(QPaintEvent* event) {
     auto rect = bytePosToRect(current_position_, false, cursor_pos_in_byte_);
     if (!rect.isEmpty()) {
       QPainter cursor_painter(viewport());
-      auto old_pen = cursor_painter.pen();
+      auto& old_pen = cursor_painter.pen();
       auto new_pen = QPen(old_pen.color());
       if (in_ascii_area) {
         new_pen.setStyle(Qt::DashLine);
@@ -1282,7 +1282,7 @@ void HexEdit::mouseDoubleClickEvent(QMouseEvent* event) {
   setSelectedChunk(newSelectedChunk);
 }
 
-bool HexEdit::isRangeVisible(qint64 start, qint64 size) {
+bool HexEdit::isRangeVisible(qint64 start, qint64 size) const {
   qint64 visible_start = startRow_ * bytesPerRow_;
   qint64 visible_end = (startRow_ + totally_visible_rows_) * bytesPerRow_;
   return start >= visible_start && (start + size) <= visible_end;
@@ -1334,7 +1334,7 @@ void HexEdit::newBinData() {
   viewport()->update();
 }
 
-void HexEdit::dataChanged() { viewport()->update(); }
+void HexEdit::dataChanged() const { viewport()->update(); }
 
 void HexEdit::modelSelectionChanged() {
   scrollToCurrentChunk();

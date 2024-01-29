@@ -27,7 +27,7 @@
 namespace veles {
 namespace parser {
 
-std::vector<uint8_t> do_inflate(const std::vector<uint8_t>& d) {
+static std::vector<uint8_t> do_inflate(const std::vector<uint8_t>& d) {
   std::vector<uint8_t> res;
   z_stream strm;
   strm.zalloc = Z_NULL;

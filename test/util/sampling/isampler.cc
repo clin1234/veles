@@ -38,7 +38,7 @@ QByteArray prepare_data(size_t size) {
   return result;
 }
 
-int MockCallback::getCallCount() { return calls_; }
+int MockCallback::getCallCount() const { return calls_; }
 
 void MockCallback::resetCallCount() { calls_ = 0; }
 

@@ -67,7 +67,7 @@ class HexEdit : public QAbstractScrollArea {
 
  public slots:
   void newBinData();
-  void dataChanged();
+  void dataChanged() const;
   void modelSelectionChanged();
   void applyChanges();
   void undo();
@@ -186,22 +186,22 @@ class HexEdit : public QAbstractScrollArea {
   void resetFontCache();
   void initParseMenu();
   void adjustBytesPerRowToWindowSize();
-  QRect bytePosToRect(qint64 pos, bool ascii = false, qint64 char_pos = 0);
-  qint64 pointToRowNum(QPoint pos);
-  qint64 pointToColumnNum(QPoint pos);
+  QRect bytePosToRect(qint64 pos, bool ascii = false, qint64 char_pos = 0) const;
+  qint64 pointToRowNum(QPoint pos) const;
+  qint64 pointToColumnNum(QPoint pos) const;
   qint64 pointToBytePos(QPoint pos);
   void flipCursorVisibility();
   WindowArea pointToWindowArea(QPoint pos);
   QString addressAsText(qint64 pos);
-  QString hexRepresentationFromByte(uint64_t byte_val);
+  QString hexRepresentationFromByte(uint64_t byte_val) const;
   static QString asciiRepresentationFromByte(uint64_t byte_val);
 
   static QColor byteTextColorFromByteValue(uint64_t byte_val);
   QColor byteBackroundColorFromPos(qint64 pos, bool modified);
 
-  qint64 selectionStart();
-  qint64 selectionEnd();
-  qint64 selectionSize();
+  qint64 selectionStart() const;
+  qint64 selectionEnd() const;
+  qint64 selectionSize() const;
 
   QModelIndex selectedChunk();
 
@@ -220,7 +220,7 @@ class HexEdit : public QAbstractScrollArea {
 
   void setSelectedChunk(QModelIndex newSelectedChunk);
   bool cursorOnLastRow() const;
-  bool isRangeVisible(qint64 start, qint64 size);
+  bool isRangeVisible(qint64 start, qint64 size) const;
   bool isByteVisible(qint64 bytePos);
   void setSelectionEnd(qint64 bytePos);
   void saveSelectionToFile(const QString& path);

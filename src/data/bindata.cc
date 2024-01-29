@@ -58,7 +58,7 @@ void BinData::copyBits(uint8_t* dst, unsigned dst_bit, const uint8_t* src,
   }
 }
 
-QString BinData::toString(size_t maxElements) {
+QString BinData::toString(size_t maxElements) const {
   QString res, suffix;
 
   if (maxElements > 0 && maxElements < size()) {

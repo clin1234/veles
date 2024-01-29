@@ -546,7 +546,7 @@ void fromMsgpackObject(const std::shared_ptr<MsgpackObject>& obj,
     std::string message;
     bool type_set = false;
     bool message_set = false;
-    for (auto el : *obj->getMap()) {
+    for (auto& el : *obj->getMap()) {
       if (el.first == "type") {
         type = *el.second->getString();
         type_set = true;

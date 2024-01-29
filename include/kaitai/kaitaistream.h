@@ -96,7 +96,7 @@ class kstream {
   veles::dbif::ObjectHandle endChunk();
   veles::parser::StreamParser* parser() { return parser_; }
   veles::dbif::ObjectHandle blob() { return obj_; }
-  bool error() { return error_; }
+  bool error() const { return error_; }
 
  private:
   veles::dbif::ObjectHandle obj_;
