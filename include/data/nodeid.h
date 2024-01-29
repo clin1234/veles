@@ -16,9 +16,9 @@
  */
 #pragma once
 
-#include <vector>
-
 #include <msgpack.hpp>
+
+#include <vector>
 
 #include <QString>
 

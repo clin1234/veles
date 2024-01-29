@@ -17,6 +17,7 @@
 #pragma once
 
 #include <QByteArray>
+
 #include "gmock/gmock.h"
 #include "util/sampling/isampler.h"
 

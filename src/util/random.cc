@@ -41,12 +41,12 @@ QString generateRandomUppercaseText(int size) {
 }
 
 QString generateSecureRandomConnectionKey() {
-/*
-#ifdef __MINGW32__
-// On MinGW random_device outputs the same sequence every time (sic!).
-#error "std::random_device is broken on MinGW"
-#endif
-*/
+  /*
+  #ifdef __MINGW32__
+  // On MinGW random_device outputs the same sequence every time (sic!).
+  #error "std::random_device is broken on MinGW"
+  #endif
+  */
   // TODO(mkow): This is cryptographically-secure on all modern OS-es, but this
   // isn't explicitly guaranteed by the standard. We should fix it someday.
   std::random_device rd;

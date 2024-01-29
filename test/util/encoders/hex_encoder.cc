@@ -16,9 +16,9 @@
  */
 #include "util/encoders/hex_encoder.h"
 
-#include "gtest/gtest.h"
-
 #include <QByteArray>
+
+#include "gtest/gtest.h"
 
 namespace veles {
 namespace util {

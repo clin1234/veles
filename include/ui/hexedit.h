@@ -186,7 +186,8 @@ class HexEdit : public QAbstractScrollArea {
   void resetFontCache();
   void initParseMenu();
   void adjustBytesPerRowToWindowSize();
-  QRect bytePosToRect(qint64 pos, bool ascii = false, qint64 char_pos = 0) const;
+  QRect bytePosToRect(qint64 pos, bool ascii = false,
+                      qint64 char_pos = 0) const;
   qint64 pointToRowNum(QPoint pos) const;
   qint64 pointToColumnNum(QPoint pos) const;
   qint64 pointToBytePos(QPoint pos);

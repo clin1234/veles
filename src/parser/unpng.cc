@@ -16,10 +16,10 @@
  */
 #include "parser/unpng.h"
 
+#include <zlib.h>
+
 #include <cstdio>
 #include <vector>
-
-#include <zlib.h>
 
 #include "parser/stream.h"
 #include "parser/utils.h"

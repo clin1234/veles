@@ -16,10 +16,10 @@
  */
 #include "util/encoders/text_encoder.h"
 
-#include "gtest/gtest.h"
-
 #include <QByteArray>
 #include <QString>
+
+#include "gtest/gtest.h"
 
 namespace veles {
 namespace util {

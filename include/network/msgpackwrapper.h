@@ -16,9 +16,9 @@
  */
 #pragma once
 
-#include <cstdint>
-
 #include <msgpack.hpp>
+
+#include <cstdint>
 
 #include <QtNetwork/QTcpSocket>
 

@@ -60,7 +60,7 @@ bool operator==(const NCObjectHandle& lhs, const NCObjectHandle& rhs) {
   return lhs.id_ == rhs.id_;
 }
 
-/* XXX: replace above definition with below when C2666 error 
+/* XXX: replace above definition with below when C2666 error
 stops appearing in VS 2022
 bool NCObjectHandle::operator==(const NCObjectHandle& other) {
   return id_ == other.id_;

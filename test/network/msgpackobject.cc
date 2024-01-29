@@ -21,7 +21,6 @@
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-
 #include "proto/exceptions.h"
 
 using testing::ContainerEq;
