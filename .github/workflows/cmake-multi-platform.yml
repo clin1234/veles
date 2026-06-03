@@ -4,9 +4,7 @@ name: CMake on multiple platforms
 
 on:
   push:
-    branches: [ "modernize" ]
   pull_request:
-    branches: [ "modernize" ]
 
 jobs:
   build:
