@@ -59,6 +59,7 @@ jobs:
 
     - name: Install gtest
       uses: Bacondish2023/setup-googletest@v1
+      if: ${{ !contains(matrix.os, 'windows') }}
       with:
         build-type: Debug
 
