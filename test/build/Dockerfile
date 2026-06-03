@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:24.04
 
 RUN apt-get update \
     && apt-get install -y \
@@ -16,8 +16,6 @@ RUN apt-get update \
     libclang-common-6.0-dev \
     # python tests dependencies
     git \
-    python2.7 \
-    python2.7-dev \
     python3-pip \
   && pip3 install tox>=2.4.0
 
@@ -26,9 +24,9 @@ COPY . /veles
 RUN mkdir /veles/build \
 	&& cd /veles/build \
 	&& cmake -D CMAKE_BUILD_TYPE=Debug .. \
-	&& cmake --build . -- -j8 \
-	&& cmake --build . --target lint -- -j8 \
-	&& cmake --build . --target format -- -j8 \
+	&& cmake --build . -- -j \
+	&& cmake --build . --target lint -- -j \
+	&& cmake --build . --target format -- -j \
 	&& cpack -D CPACK_PACKAGE_FILE_NAME=veles-docker -G ZIP -C Debug \
   && ( cd /veles/python && ./run_tests.sh )
 
