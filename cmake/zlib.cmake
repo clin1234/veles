@@ -10,8 +10,8 @@ else()
   set(ZLIB_SOURCE  "${CMAKE_CURRENT_BINARY_DIR}/zlib-src")
   set(ZLIB_BUILD   "${CMAKE_CURRENT_BINARY_DIR}/zlib")
   set(ZLIB_INSTALL "${CMAKE_CURRENT_BINARY_DIR}/prefix")
-  set(ZLIB_FILE "https://zlib.net/fossils/zlib-1.2.8.tar.gz")
-  set(ZLIB_MD5 "44d667c142d7cda120332623eab69f40")
+  set(ZLIB_FILE "https://zlib.net/zlib-1.3.2.tar.xz")
+  set(ZLIB_HASH "SHA256=d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3")
 
   if(CMAKE_CFG_INTDIR STREQUAL ".")
     set(ZLIB_BUILD_TYPE ${CMAKE_BUILD_TYPE})
@@ -26,8 +26,7 @@ else()
       BINARY_DIR ${ZLIB_BUILD}
       INSTALL_DIR ${ZLIB_INSTALL}
       URL ${ZLIB_FILE}
-      # `ExternalProject_Add` currently doesn't support anything other than MD5.
-      URL_MD5 ${ZLIB_MD5}
+      URL_HASH ${ZLIB_HASH}
       PATCH_COMMAND ${CMAKE_COMMAND} -E remove "<SOURCE_DIR>/zconf.h"
       CMAKE_CACHE_ARGS
       -DCMAKE_CXX_FLAGS:STRING=${CMAKE_CXX_FLAGS}
