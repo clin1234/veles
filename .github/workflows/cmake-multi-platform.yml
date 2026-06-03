@@ -78,7 +78,7 @@ jobs:
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
     - name: Package as ZIP
-      run: cpack -D CPACK_PACKAGE_FILE_NAME=veles-${{ matrix.os }} -G ZIP -C ${{ matrix.build_type }}
+      run: cpack -G ZIP -C ${{ matrix.build_type }}
 
     - name: Upload ZIPs
       uses: actions/upload-artifact@v7
