@@ -2,10 +2,10 @@ if(WIN32)
   if(NOT OPENSSL_DLL_DIR)
     FIND_PACKAGE(Perl REQUIRED)
 
-    set(OPENSSL_URL "https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-1.1.1w.tar.gz")
-    set(OPENSSL_ARCHIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/openssl-1.1.1w.tar.gz")
-    set(OPENSSL_SHA256 "cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8")
-    set(OPENSSL_DIR "${CMAKE_CURRENT_BINARY_DIR}/openssl-1.1.1w")
+    set(OPENSSL_URL "https://github.com/openssl/openssl/releases/download/OpenSSL_1_0_2u/openssl-1.0.2u.tar.gz")
+    set(OPENSSL_ARCHIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/openssl-1.0.2u.tar.gz")
+    set(OPENSSL_SHA256 "ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16")
+    set(OPENSSL_DIR "${CMAKE_CURRENT_BINARY_DIR}/openssl-1.0.2u")
     file(DOWNLOAD ${OPENSSL_URL} ${OPENSSL_ARCHIVE_PATH} EXPECTED_HASH SHA256=${OPENSSL_SHA256})
 
     add_custom_command(OUTPUT ${OPENSSL_DIR}
