@@ -78,9 +78,10 @@ jobs:
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
     - name: Package as ZIP
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: cpack -G ZIP -C ${{ matrix.build_type }}
 
     - name: Upload ZIPs
       uses: actions/upload-artifact@v7
       with:
-        path: '*.zip'
+        path: '${{ steps.strings.outputs.build-output-dir }}/*.zip'
