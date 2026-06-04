@@ -134,7 +134,7 @@ add_custom_command(OUTPUT ${MSGPACK_CPP_HEADER} ${MSGPACK_CPP_SOURCE} ${MSGPACK_
 )
 
 file(GLOB KAITAI_HEADERS "${INCLUDE_DIR}/kaitai/*.h")
-file(GLOB KAITAI_SOURCES "${SRC_DIR}/kaitai/*.cpp" "${SRC_DIR}/kaitai/*.cc")
+file(GLOB KAITAI_SOURCES "${SRC_DIR}/kaitai/*.cpp")
 
 # Resources
 qt5_add_resources(RESOURCES resources/veles.qrc)
