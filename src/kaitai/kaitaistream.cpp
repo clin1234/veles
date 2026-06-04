@@ -217,7 +217,7 @@ std::string kaitai::kstream::read_strz(const char* enc, char term, bool include,
   return bytes_to_str(data, enc);
 }
 
-std::vector<uint8_t> kaitai::kstream::read_bytes(size_t len) {
+std::string kaitai::kstream::read_bytes(size_t len) {
   if (error_) {
     return {};
   }
@@ -225,13 +225,13 @@ std::vector<uint8_t> kaitai::kstream::read_bytes(size_t len) {
   // Hack to avoid double chunks when allocating new io from fixed length data
   if (current_name_ != nullptr && strncmp(current_name_, "_skip_me_", 9) == 0) {
     parser_->skip(len);
-    return std::vector<uint8_t>(len);
+    return std::string(len);
   }
   auto result = parser_->getBytes(current_name_, len);
-  return result;
+  return std::string(result.start(), result.end());
 }
 
-std::vector<uint8_t> kaitai::kstream::read_bytes_full() {
+std::string kaitai::kstream::read_bytes_full() {
   if (error_) {
     return {};
   }
@@ -239,7 +239,7 @@ std::vector<uint8_t> kaitai::kstream::read_bytes_full() {
   return read_bytes(parser_->bytesLeft());
 }
 
-std::vector<uint8_t> kaitai::kstream::ensure_fixed_contents(
+std::string kaitai::kstream::ensure_fixed_contents(
     const std::string& expected) {
   if (error_) {
     return {};
@@ -253,7 +253,7 @@ std::vector<uint8_t> kaitai::kstream::ensure_fixed_contents(
   return result;
 }
 
-std::string kaitai::kstream::bytes_to_str(const std::vector<uint8_t>& bytes,
+std::string kaitai::kstream::bytes_to_str(const std::string& bytes,
                                              const char* /*src_enc*/) {
   std::string res;
   for (auto byte : bytes) {
