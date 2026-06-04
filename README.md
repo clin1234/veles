@@ -1,6 +1,13 @@
 # Veles-ng: A revival of a new age tool for binary analysis
 
-Stable releases will be available at https://github.com/codilime/veles/releases.
+TODO:
+
+- [] Bump OpenSSL from 1.0.2u to (at least) 3.0 on Windows builds
+- [] Port UI to Qt 6
+- [] Expand supported file formats for visualization beyond 8:
+avi, bmp, elf, gif, PE files, png, mov, zip
+
+Stable releases will be available at https://github.com/clin1234/veles/releases.
 In the meantime, you can download test builds here:
 https://github.com/clin1234/veles/actions/workflows/cmake-multi-platform.yml?query=is%3Asuccess 
 
