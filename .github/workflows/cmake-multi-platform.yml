@@ -84,4 +84,7 @@ jobs:
     - name: Upload ZIPs
       uses: actions/upload-artifact@v7
       with:
+        name: '{{ $matrix.os }}-${{ matrix.c_compiler }}-${{ matrix.build_type }}.zip'
         path: '${{ steps.strings.outputs.build-output-dir }}/*.zip'
+        compression-level: 0
+        archive: false
