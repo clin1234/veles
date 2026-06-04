@@ -20,7 +20,7 @@ namespace veles {
 namespace util {
 namespace version {
 
-const unsigned year = 2018;
+const unsigned year = 2026;
 const unsigned month = 5;
 const unsigned release = 0;
 const unsigned patch = 0;
