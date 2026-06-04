@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.10.0)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
@@ -21,9 +21,6 @@ project(VELES C CXX)
 if(WIN32)
   if(CMAKE_SIZEOF_VOID_P EQUAL 4)
     message(FATAL_ERROR "Windows 32-bit is not supported due to performance problems in msgpack")
-  endif()
-  if(CMAKE_VERSION VERSION_LESS "3.10.0")
-    message(FATAL_ERROR "Windows builds require CMake 3.10.0 or higher")
   endif()
 endif()
 
