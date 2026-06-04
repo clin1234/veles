@@ -2,9 +2,9 @@
 
 TODO:
 
-- [] Bump OpenSSL from 1.0.2u to (at least) 3.0 on Windows builds
-- [] Port UI to Qt 6
-- [] Expand supported file formats for visualization beyond 8:
+- [ ] Bump OpenSSL from 1.0.2u to (at least) 3.0 on Windows builds
+- [ ] Port UI to Qt 6
+- [ ] Expand supported file formats for visualization beyond 8:
 avi, bmp, elf, gif, PE files, png, mov, zip
 
 Stable releases will be available at https://github.com/clin1234/veles/releases.
