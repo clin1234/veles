@@ -604,396 +604,6 @@ namespace veles {
         public:
             ~elf_t();
 
-            class dt_flag_1_values_t : public kaitai::kstruct {
-
-            public:
-
-                dt_flag_1_values_t(uint32_t p_value, kaitai::kstream* p__io, elf_t::endian_elf_t::dynamic_section_entry_t* p__parent = nullptr, elf_t* p__root = nullptr);
-
-            private:
-                void _read();
-                void _clean_up();
-
-            public:
-                ~dt_flag_1_values_t();
-
-            private:
-                bool f_confalt;
-                bool m_confalt;
-
-            public:
-
-                /**
-                 * Configuration alternative created.
-                 */
-                bool confalt();
-
-            private:
-                bool f_direct;
-                bool m_direct;
-
-            public:
-
-                /**
-                 * Direct binding enabled.
-                 */
-                bool direct();
-
-            private:
-                bool f_dispreldne;
-                bool m_dispreldne;
-
-            public:
-
-                /**
-                 * Disp reloc applied at build time.
-                 */
-                bool dispreldne();
-
-            private:
-                bool f_disprelpnd;
-                bool m_disprelpnd;
-
-            public:
-
-                /**
-                 * Disp reloc applied at run-time.
-                 */
-                bool disprelpnd();
-
-            private:
-                bool f_edited;
-                bool m_edited;
-
-            public:
-
-                /**
-                 * Object is modified after built.
-                 */
-                bool edited();
-
-            private:
-                bool f_endfiltee;
-                bool m_endfiltee;
-
-            public:
-
-                /**
-                 * Filtee terminates filters search.
-                 */
-                bool endfiltee();
-
-            private:
-                bool f_globaudit;
-                bool m_globaudit;
-
-            public:
-
-                /**
-                 * Global auditing required.
-                 */
-                bool globaudit();
-
-            private:
-                bool f_group;
-                bool m_group;
-
-            public:
-
-                /**
-                 * Set RTLD_GROUP for this object.
-                 */
-                bool group();
-
-            private:
-                bool f_ignmuldef;
-                bool m_ignmuldef;
-
-            public:
-                bool ignmuldef();
-
-            private:
-                bool f_initfirst;
-                bool m_initfirst;
-
-            public:
-
-                /**
-                 * Set RTLD_INITFIRST for this object
-                 */
-                bool initfirst();
-
-            private:
-                bool f_interpose;
-                bool m_interpose;
-
-            public:
-
-                /**
-                 * Object is used to interpose.
-                 */
-                bool interpose();
-
-            private:
-                bool f_loadfltr;
-                bool m_loadfltr;
-
-            public:
-
-                /**
-                 * Trigger filtee loading at runtime.
-                 */
-                bool loadfltr();
-
-            private:
-                bool f_nodeflib;
-                bool m_nodeflib;
-
-            public:
-
-                /**
-                 * Ignore default lib search path.
-                 */
-                bool nodeflib();
-
-            private:
-                bool f_nodelete;
-                bool m_nodelete;
-
-            public:
-
-                /**
-                 * Set RTLD_NODELETE for this object.
-                 */
-                bool nodelete();
-
-            private:
-                bool f_nodirect;
-                bool m_nodirect;
-
-            public:
-
-                /**
-                 * Object has no-direct binding.
-                 */
-                bool nodirect();
-
-            private:
-                bool f_nodump;
-                bool m_nodump;
-
-            public:
-
-                /**
-                 * Object can't be dldump'ed.
-                 */
-                bool nodump();
-
-            private:
-                bool f_nohdr;
-                bool m_nohdr;
-
-            public:
-                bool nohdr();
-
-            private:
-                bool f_noksyms;
-                bool m_noksyms;
-
-            public:
-                bool noksyms();
-
-            private:
-                bool f_noopen;
-                bool m_noopen;
-
-            public:
-
-                /**
-                 * Set RTLD_NOOPEN for this object.
-                 */
-                bool noopen();
-
-            private:
-                bool f_noreloc;
-                bool m_noreloc;
-
-            public:
-                bool noreloc();
-
-            private:
-                bool f_now;
-                bool m_now;
-
-            public:
-
-                /**
-                 * Set RTLD_NOW for this object.
-                 */
-                bool now();
-
-            private:
-                bool f_origin;
-                bool m_origin;
-
-            public:
-
-                /**
-                 * $ORIGIN must be handled.
-                 */
-                bool origin();
-
-            private:
-                bool f_pie;
-                bool m_pie;
-
-            public:
-                bool pie();
-
-            private:
-                bool f_rtld_global;
-                bool m_rtld_global;
-
-            public:
-
-                /**
-                 * Set RTLD_GLOBAL for this object.
-                 */
-                bool rtld_global();
-
-            private:
-                bool f_singleton;
-                bool m_singleton;
-
-            public:
-
-                /**
-                 * Singleton symbols are used.
-                 */
-                bool singleton();
-
-            private:
-                bool f_stub;
-                bool m_stub;
-
-            public:
-                bool stub();
-
-            private:
-                bool f_symintpose;
-                bool m_symintpose;
-
-            public:
-
-                /**
-                 * Object has individual interposers.
-                 */
-                bool symintpose();
-
-            private:
-                bool f_trans;
-                bool m_trans;
-
-            public:
-                bool trans();
-
-            private:
-                uint32_t m_value;
-                elf_t* m__root;
-                elf_t::endian_elf_t::dynamic_section_entry_t* m__parent;
-
-            public:
-                uint32_t value() const { return m_value; }
-                elf_t* _root() const { return m__root; }
-                elf_t::endian_elf_t::dynamic_section_entry_t* _parent() const { return m__parent; }
-            };
-
-            /**
-             * \sa https://refspecs.linuxbase.org/elf/gabi4+/ch5.dynamic.html Figure 5-11: DT_FLAGS values
-             * \sa https://github.com/golang/go/blob/48dfddbab3/src/debug/elf/elf.go#L1079-L1095 Source
-             * \sa https://docs.oracle.com/en/operating-systems/solaris/oracle-solaris/11.4/linkers-libraries/dynamic-section.html#GUID-4336A69A-D905-4FCE-A398-80375A9E6464__CHAPTER7-TBL-5 Source
-             */
-
-            class dt_flag_values_t : public kaitai::kstruct {
-
-            public:
-
-                dt_flag_values_t(uint32_t p_value, kaitai::kstream* p__io, elf_t::endian_elf_t::dynamic_section_entry_t* p__parent = nullptr, elf_t* p__root = nullptr);
-
-            private:
-                void _read();
-                void _clean_up();
-
-            public:
-                ~dt_flag_values_t();
-
-            private:
-                bool f_bind_now;
-                bool m_bind_now;
-
-            public:
-
-                /**
-                 * all relocations for this object must be processed before returning
-                 * control to the program
-                 */
-                bool bind_now();
-
-            private:
-                bool f_origin;
-                bool m_origin;
-
-            public:
-
-                /**
-                 * object may reference the $ORIGIN substitution string
-                 */
-                bool origin();
-
-            private:
-                bool f_static_tls;
-                bool m_static_tls;
-
-            public:
-
-                /**
-                 * object uses static thread-local storage scheme
-                 */
-                bool static_tls();
-
-            private:
-                bool f_symbolic;
-                bool m_symbolic;
-
-            public:
-
-                /**
-                 * symbolic linking
-                 */
-                bool symbolic();
-
-            private:
-                bool f_textrel;
-                bool m_textrel;
-
-            public:
-
-                /**
-                 * relocation entries might request modifications to a non-writable segment
-                 */
-                bool textrel();
-
-            private:
-                uint32_t m_value;
-                elf_t* m__root;
-                elf_t::endian_elf_t::dynamic_section_entry_t* m__parent;
-
-            public:
-                uint32_t value() const { return m_value; }
-                elf_t* _root() const { return m__root; }
-                elf_t::endian_elf_t::dynamic_section_entry_t* _parent() const { return m__parent; }
-            };
-
             class endian_elf_t : public kaitai::kstruct {
 
             public:
@@ -1903,6 +1513,396 @@ namespace veles {
                 std::string _raw_section_names() const { return m__raw_section_names; }
                 kaitai::kstream* _io__raw_section_names() const { return m__io__raw_section_names.get(); }
             };
+            class dt_flag_1_values_t : public kaitai::kstruct {
+
+            public:
+
+                dt_flag_1_values_t(uint32_t p_value, kaitai::kstream* p__io, elf_t::endian_elf_t::dynamic_section_entry_t* p__parent = nullptr, elf_t* p__root = nullptr);
+
+            private:
+                void _read();
+                void _clean_up();
+
+            public:
+                ~dt_flag_1_values_t();
+
+            private:
+                bool f_confalt;
+                bool m_confalt;
+
+            public:
+
+                /**
+                 * Configuration alternative created.
+                 */
+                bool confalt();
+
+            private:
+                bool f_direct;
+                bool m_direct;
+
+            public:
+
+                /**
+                 * Direct binding enabled.
+                 */
+                bool direct();
+
+            private:
+                bool f_dispreldne;
+                bool m_dispreldne;
+
+            public:
+
+                /**
+                 * Disp reloc applied at build time.
+                 */
+                bool dispreldne();
+
+            private:
+                bool f_disprelpnd;
+                bool m_disprelpnd;
+
+            public:
+
+                /**
+                 * Disp reloc applied at run-time.
+                 */
+                bool disprelpnd();
+
+            private:
+                bool f_edited;
+                bool m_edited;
+
+            public:
+
+                /**
+                 * Object is modified after built.
+                 */
+                bool edited();
+
+            private:
+                bool f_endfiltee;
+                bool m_endfiltee;
+
+            public:
+
+                /**
+                 * Filtee terminates filters search.
+                 */
+                bool endfiltee();
+
+            private:
+                bool f_globaudit;
+                bool m_globaudit;
+
+            public:
+
+                /**
+                 * Global auditing required.
+                 */
+                bool globaudit();
+
+            private:
+                bool f_group;
+                bool m_group;
+
+            public:
+
+                /**
+                 * Set RTLD_GROUP for this object.
+                 */
+                bool group();
+
+            private:
+                bool f_ignmuldef;
+                bool m_ignmuldef;
+
+            public:
+                bool ignmuldef();
+
+            private:
+                bool f_initfirst;
+                bool m_initfirst;
+
+            public:
+
+                /**
+                 * Set RTLD_INITFIRST for this object
+                 */
+                bool initfirst();
+
+            private:
+                bool f_interpose;
+                bool m_interpose;
+
+            public:
+
+                /**
+                 * Object is used to interpose.
+                 */
+                bool interpose();
+
+            private:
+                bool f_loadfltr;
+                bool m_loadfltr;
+
+            public:
+
+                /**
+                 * Trigger filtee loading at runtime.
+                 */
+                bool loadfltr();
+
+            private:
+                bool f_nodeflib;
+                bool m_nodeflib;
+
+            public:
+
+                /**
+                 * Ignore default lib search path.
+                 */
+                bool nodeflib();
+
+            private:
+                bool f_nodelete;
+                bool m_nodelete;
+
+            public:
+
+                /**
+                 * Set RTLD_NODELETE for this object.
+                 */
+                bool nodelete();
+
+            private:
+                bool f_nodirect;
+                bool m_nodirect;
+
+            public:
+
+                /**
+                 * Object has no-direct binding.
+                 */
+                bool nodirect();
+
+            private:
+                bool f_nodump;
+                bool m_nodump;
+
+            public:
+
+                /**
+                 * Object can't be dldump'ed.
+                 */
+                bool nodump();
+
+            private:
+                bool f_nohdr;
+                bool m_nohdr;
+
+            public:
+                bool nohdr();
+
+            private:
+                bool f_noksyms;
+                bool m_noksyms;
+
+            public:
+                bool noksyms();
+
+            private:
+                bool f_noopen;
+                bool m_noopen;
+
+            public:
+
+                /**
+                 * Set RTLD_NOOPEN for this object.
+                 */
+                bool noopen();
+
+            private:
+                bool f_noreloc;
+                bool m_noreloc;
+
+            public:
+                bool noreloc();
+
+            private:
+                bool f_now;
+                bool m_now;
+
+            public:
+
+                /**
+                 * Set RTLD_NOW for this object.
+                 */
+                bool now();
+
+            private:
+                bool f_origin;
+                bool m_origin;
+
+            public:
+
+                /**
+                 * $ORIGIN must be handled.
+                 */
+                bool origin();
+
+            private:
+                bool f_pie;
+                bool m_pie;
+
+            public:
+                bool pie();
+
+            private:
+                bool f_rtld_global;
+                bool m_rtld_global;
+
+            public:
+
+                /**
+                 * Set RTLD_GLOBAL for this object.
+                 */
+                bool rtld_global();
+
+            private:
+                bool f_singleton;
+                bool m_singleton;
+
+            public:
+
+                /**
+                 * Singleton symbols are used.
+                 */
+                bool singleton();
+
+            private:
+                bool f_stub;
+                bool m_stub;
+
+            public:
+                bool stub();
+
+            private:
+                bool f_symintpose;
+                bool m_symintpose;
+
+            public:
+
+                /**
+                 * Object has individual interposers.
+                 */
+                bool symintpose();
+
+            private:
+                bool f_trans;
+                bool m_trans;
+
+            public:
+                bool trans();
+
+            private:
+                uint32_t m_value;
+                elf_t* m__root;
+                elf_t::endian_elf_t::dynamic_section_entry_t* m__parent;
+
+            public:
+                uint32_t value() const { return m_value; }
+                elf_t* _root() const { return m__root; }
+                elf_t::endian_elf_t::dynamic_section_entry_t* _parent() const { return m__parent; }
+            };
+
+            /**
+             * \sa https://refspecs.linuxbase.org/elf/gabi4+/ch5.dynamic.html Figure 5-11: DT_FLAGS values
+             * \sa https://github.com/golang/go/blob/48dfddbab3/src/debug/elf/elf.go#L1079-L1095 Source
+             * \sa https://docs.oracle.com/en/operating-systems/solaris/oracle-solaris/11.4/linkers-libraries/dynamic-section.html#GUID-4336A69A-D905-4FCE-A398-80375A9E6464__CHAPTER7-TBL-5 Source
+             */
+
+            class dt_flag_values_t : public kaitai::kstruct {
+
+            public:
+
+                dt_flag_values_t(uint32_t p_value, kaitai::kstream* p__io, elf_t::endian_elf_t::dynamic_section_entry_t* p__parent = nullptr, elf_t* p__root = nullptr);
+
+            private:
+                void _read();
+                void _clean_up();
+
+            public:
+                ~dt_flag_values_t();
+
+            private:
+                bool f_bind_now;
+                bool m_bind_now;
+
+            public:
+
+                /**
+                 * all relocations for this object must be processed before returning
+                 * control to the program
+                 */
+                bool bind_now();
+
+            private:
+                bool f_origin;
+                bool m_origin;
+
+            public:
+
+                /**
+                 * object may reference the $ORIGIN substitution string
+                 */
+                bool origin();
+
+            private:
+                bool f_static_tls;
+                bool m_static_tls;
+
+            public:
+
+                /**
+                 * object uses static thread-local storage scheme
+                 */
+                bool static_tls();
+
+            private:
+                bool f_symbolic;
+                bool m_symbolic;
+
+            public:
+
+                /**
+                 * symbolic linking
+                 */
+                bool symbolic();
+
+            private:
+                bool f_textrel;
+                bool m_textrel;
+
+            public:
+
+                /**
+                 * relocation entries might request modifications to a non-writable segment
+                 */
+                bool textrel();
+
+            private:
+                uint32_t m_value;
+                elf_t* m__root;
+                elf_t::endian_elf_t::dynamic_section_entry_t* m__parent;
+
+            public:
+                uint32_t value() const { return m_value; }
+                elf_t* _root() const { return m__root; }
+                elf_t::endian_elf_t::dynamic_section_entry_t* _parent() const { return m__parent; }
+            };
+
 
             class phdr_type_flags_t : public kaitai::kstruct {
 
