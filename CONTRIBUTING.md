@@ -13,14 +13,6 @@ reported. Gather following information:
 and create an issue on GitHub.
 
 ## Submitting changes
-
-### Formal requirement
-
-You **NEED** to have a signed CLA sent to CodiLime before your code can be
-merged. You can download one from [Contributor License
-Agreement](https://www.codisec.com/cla). Sign it and then send a scan of it to
-contact@codisec.com. You can open a pull request and have it reviewed while we
-process your CLA.
  
 ### Style
 We are trying to stick as close as possible to [Google C++ Style Guide].

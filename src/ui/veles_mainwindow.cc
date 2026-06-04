@@ -91,12 +91,10 @@ void VelesMainWindow::newFile() { createFileBlob(""); }
 
 void VelesMainWindow::about() {
   QMessageBox::about(this, tr("About Veles"),
-                     tr("This is Veles, a binary analysis tool and editor.\n"
+                     tr("This is Veles-ng, a binary analysis tool and editor.\n"
                         "Version: %1\n"
                         "\n"
-                        "Report bugs to contact@veles.io\n"
-                        "IRC: #veles@freenode.net\n"
-                        "https://veles.io/\n"
+                        "Report bugs to github.com/clin1234/veles/issues\n"
                         "\n"
                         "Copyright 2026 Charlie Lin, 2017 Codilime\n"
                         "Licensed under the Apache License, Version 2.0\n")

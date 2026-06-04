@@ -531,7 +531,7 @@ endif()
 
 # Unix paths
 if(CMAKE_HOST_UNIX AND NOT CMAKE_HOST_APPLE)
-  set(CPACK_PACKAGE_CONTACT "contact@veles.io")
+  set(CPACK_PACKAGE_CONTACT "github.com/clin1234/veles/issues")
   set(CPACK_DEBIAN_PACKAGE_SECTION "utils")
   set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt5core5a (>= 5.5.1), libqt5gui5 (>= 5.5.1),
       libqt5widgets5 (>= 5.5.1), libqt5network5 (>= 5.5.1), zlib1g (>= 1:1.2.8), g++,
@@ -582,7 +582,7 @@ if(WIN32)
   set(CPACK_PACKAGE_INSTALL_DIRECTORY "Veles")
   set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
   set(CPACK_NSIS_URL_INFO_ABOUT "https://veles.io")
-  set(CPACK_NSIS_CONTACT "contact@veles.io")
+  set(CPACK_NSIS_CONTACT "github.com/clin1234/veles/issues")
   set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/resources/install/license.txt")
   set(CPACK_PACKAGE_EXECUTABLES "veles" "VELES")
   set(CPACK_CREATE_DESKTOP_LINKS "veles")
@@ -597,7 +597,7 @@ if(APPLE)
   find_program(MACDEPLOYQT_EXECUTABLE
       macdeployqt
       ENV QT
-      PATH_SUFFIXES "5.7/clang_64/bin"
+      PATH_SUFFIXES "5.15/clang_64/bin"
   )
   add_custom_command(TARGET main_exe POST_BUILD
       COMMENT "Ensuring Qt dependencies"
@@ -615,7 +615,7 @@ set(CPACK_COMPONENT_SERVER_DISPLAY_NAME "Veles server")
 set(CPACK_COMPONENT_APPLICATION_REQUIRED ON)
 
 # Few common CPack settings
-set(CPACK_PACKAGE_VENDOR "Codilime")
+set(CPACK_PACKAGE_VENDOR "Charlie Lin")
 set(CPACK_PACKAGE_NAME "veles")
 string(TIMESTAMP VERSION "%Y.%m")
 set(CPACK_PACKAGE_VERSION "${VERSION}")

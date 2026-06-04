@@ -1,3 +1,11 @@
+# Veles-ng: A revival of a new age tool for binary analysis
+
+Stable releases will be available at https://github.com/codilime/veles/releases.
+In the meantime, you can download test builds here:
+https://github.com/clin1234/veles/actions/workflows/cmake-multi-platform.yml?query=is%3Asuccess 
+
+The original README is as follows:
+
 # Veles - A new age tool for binary analysis
 
 ![A .tar file as seen in Veles](resources/screens/tarball.png)
