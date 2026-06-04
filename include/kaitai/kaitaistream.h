@@ -85,7 +85,7 @@ class kstream {
   std::vector<uint8_t> read_bytes_full();
   std::vector<uint8_t> ensure_fixed_contents(const std::string& expected);
 
-  static std::string bytes_to_string(const std::vector<uint8_t>& bytes,
+  static std::string bytes_to_str(const std::vector<uint8_t>& bytes,
                                      const char* src_enc);
 
   /** additional methods required by Veles */

@@ -192,7 +192,7 @@ std::string kaitai::kstream::read_str_eos(const char* enc) {
   if (error_) {
     return "";
   }
-  return bytes_to_string(parser_->getBytes(current_name_, parser_->bytesLeft()),
+  return bytes_to_str(parser_->getBytes(current_name_, parser_->bytesLeft()),
                          enc);
 }
 
@@ -200,7 +200,7 @@ std::string kaitai::kstream::read_str_byte_limit(size_t len, const char* enc) {
   if (error_) {
     return "";
   }
-  return bytes_to_string(parser_->getBytes(current_name_, len), enc);
+  return bytes_to_str(parser_->getBytes(current_name_, len), enc);
 }
 
 std::string kaitai::kstream::read_strz(const char* enc, char term, bool include,
@@ -214,7 +214,7 @@ std::string kaitai::kstream::read_strz(const char* enc, char term, bool include,
     parser_->skip(1);
   }
 
-  return bytes_to_string(data, enc);
+  return bytes_to_str(data, enc);
 }
 
 std::vector<uint8_t> kaitai::kstream::read_bytes(size_t len) {
@@ -253,7 +253,7 @@ std::vector<uint8_t> kaitai::kstream::ensure_fixed_contents(
   return result;
 }
 
-std::string kaitai::kstream::bytes_to_string(const std::vector<uint8_t>& bytes,
+std::string kaitai::kstream::bytes_to_str(const std::vector<uint8_t>& bytes,
                                              const char* /*src_enc*/) {
   std::string res;
   for (auto byte : bytes) {
