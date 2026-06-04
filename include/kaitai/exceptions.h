@@ -1,7 +1,8 @@
 #ifndef KAITAI_EXCEPTIONS_H
 #define KAITAI_EXCEPTIONS_H
 
-#include "kaitai/kaitaistream.h
+#include "kaitai/kaitaistream.h"
+#include "kaitaistream.h"
 
 #include <stdexcept> // std::runtime_error
 #include <string> // std::string
@@ -16,6 +17,8 @@
 #else
 #define KS_NOEXCEPT throw()
 #endif
+
+using veles::kaitai::kstream;
 
 namespace kaitai {
 
