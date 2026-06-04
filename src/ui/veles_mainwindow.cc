@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 CodiLime
+ * Copyright 2026 Charlie Lin, 2017 Codilime
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ void VelesMainWindow::about() {
                         "IRC: #veles@freenode.net\n"
                         "https://veles.io/\n"
                         "\n"
-                        "Copyright 2017 CodiLime\n"
+                        "Copyright 2026 Charlie Lin, 2017 Codilime\n"
                         "Licensed under the Apache License, Version 2.0\n")
                          .arg(util::version::string));
 }

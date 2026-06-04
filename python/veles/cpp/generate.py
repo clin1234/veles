@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2017 CodiLime
+# Copyright 2026 Charlie Lin, 2017 Codilime
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ def generate_cpp_code():
     parser.add_argument("source_modules", nargs="+")
     args = parser.parse_args()
     license = """/*
- * Copyright 2017 CodiLime
+ * Copyright 2026 Charlie Lin, 2017 Codilime
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
