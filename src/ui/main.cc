@@ -30,6 +30,14 @@
 #include "visualization/trigram.h"
 
 int main(int argc, char* argv[]) {
+  QApplication::setApplicationName("Veles NG");
+  QApplication::setOrganizationName("Charlie Lin");
+  QApplication::setOrganizationDomain("https://github.com/clin1234");
+  QApplication::setApplicationVersion(veles::util::version::string);
+
+  QApplication::setStyle(veles::util::settings::theme::createStyle());
+  QApplication::setPalette(veles::util::settings::theme::palette());
+  QApplication::setFont(veles::util::settings::theme::font());
   Q_INIT_RESOURCE(veles);
 
   QSurfaceFormat format;
@@ -44,13 +52,6 @@ int main(int argc, char* argv[]) {
   // will break.
   veles::ui::VelesApplication app(argc, argv);
 
-  QApplication::setApplicationName("Veles");
-  QApplication::setOrganizationName("CodiSec");
-  QApplication::setApplicationVersion(veles::util::version::string);
-
-  QApplication::setStyle(veles::util::settings::theme::createStyle());
-  QApplication::setPalette(veles::util::settings::theme::palette());
-  QApplication::setFont(veles::util::settings::theme::font());
 
   // Identify locale and load translation if available
   QString locale = QLocale::system().name();
