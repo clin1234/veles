@@ -11,9 +11,9 @@ class ElfParser : public parser::Parser {
     try {
       auto stream = kaitai::kstream(blob, start, parent_chunk);
       kaitai::elf_t parser(&stream);
-      parser.program_headers();
-      parser.section_headers();
-      parser.strings();
+      // parser.program_headers();
+      // parser.section_headers();
+      // parser.strings();
     } catch (const std::exception&) {
     }
   }
