@@ -10,7 +10,7 @@ class PngParser : public parser::Parser {
              const dbif::ObjectHandle& parent_chunk) override {
     try {
       auto stream = kaitai::kstream(blob, start, parent_chunk);
-      auto parser = kaitai::png::png_t(&stream);
+      kaitai::png_t parser(&stream);
     } catch (const std::exception&) {
     }
   }

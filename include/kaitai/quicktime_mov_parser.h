@@ -10,7 +10,7 @@ class Quicktime_movParser : public parser::Parser {
              const dbif::ObjectHandle& parent_chunk) override {
     try {
       auto stream = kaitai::kstream(blob, start, parent_chunk);
-      auto parser = kaitai::quicktime_mov_t(&stream);
+      kaitai::quicktime_mov_t parser(&stream);
     } catch (const std::exception&) {
     }
   }

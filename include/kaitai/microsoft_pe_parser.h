@@ -10,7 +10,7 @@ class Microsoft_peParser : public parser::Parser {
              const dbif::ObjectHandle& parent_chunk) override {
     try {
       auto stream = kaitai::kstream(blob, start, parent_chunk);
-      auto parser = kaitai::microsoft_pe_t(&stream);
+      kaitai::microsoft_pe_t parser(&stream);
     } catch (const std::exception&) {
     }
   }
