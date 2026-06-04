@@ -10,7 +10,7 @@ class AviParser : public parser::Parser {
              const dbif::ObjectHandle& parent_chunk) override {
     try {
       auto stream = kaitai::kstream(blob, start, parent_chunk);
-      auto parser = kaitai::avi::avi_t(&stream);
+      auto parser = kaitai::avi_t(&stream);
     } catch (const std::exception&) {
     }
   }

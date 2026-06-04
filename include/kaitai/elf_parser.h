@@ -10,7 +10,7 @@ class ElfParser : public parser::Parser {
              const dbif::ObjectHandle& parent_chunk) override {
     try {
       auto stream = kaitai::kstream(blob, start, parent_chunk);
-      auto parser = kaitai::elf::elf_t(&stream);
+      auto parser = kaitai::elf_t(&stream);
       parser.program_headers();
       parser.section_headers();
       parser.strings();

@@ -10,7 +10,7 @@ class GifParser : public parser::Parser {
              const dbif::ObjectHandle& parent_chunk) override {
     try {
       auto stream = kaitai::kstream(blob, start, parent_chunk);
-      auto parser = kaitai::gif::gif_t(&stream);
+      auto parser = kaitai::gif_t(&stream);
     } catch (const std::exception&) {
     }
   }

@@ -10,7 +10,7 @@ class BmpParser : public parser::Parser {
              const dbif::ObjectHandle& parent_chunk) override {
     try {
       auto stream = kaitai::kstream(blob, start, parent_chunk);
-      auto parser = kaitai::bmp::bmp_t(&stream);
+      auto parser = kaitai::bmp_t(&stream);
       parser.image();
     } catch (const std::exception&) {
     }
