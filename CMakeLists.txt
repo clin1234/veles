@@ -134,6 +134,8 @@ add_custom_command(OUTPUT ${MSGPACK_CPP_HEADER} ${MSGPACK_CPP_SOURCE} ${MSGPACK_
     VERBATIM
 )
 
+add_compile_definitions(KAITAI_STREAM_H_CPP11_SUPPORT=1)
+
 file(GLOB KAITAI_HEADERS "${INCLUDE_DIR}/kaitai/*.h")
 file(GLOB KAITAI_SOURCES "${SRC_DIR}/kaitai/*.cpp")
 

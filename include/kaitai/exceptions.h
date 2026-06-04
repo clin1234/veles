@@ -1,7 +1,7 @@
 #ifndef KAITAI_EXCEPTIONS_H
 #define KAITAI_EXCEPTIONS_H
 
-#include <kaitai/kaitaistream.h>
+#include "kaitai/kaitaistream.h
 
 #include <stdexcept> // std::runtime_error
 #include <string> // std::string
