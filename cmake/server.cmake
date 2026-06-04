@@ -52,7 +52,7 @@ if(WIN32)
 
   add_custom_command(
       OUTPUT ${SERVER_OUTPUT_VELES_LIB_FILE}
-      COMMAND ${BASEPYEXE} setup.py install --install-lib ${SERVER_PYTHON_DIR_NATIVE}
+      COMMAND ${BASEPYEXE} -m pip install . --target ${SERVER_PYTHON_DIR_NATIVE}
       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/python/
       COMMENT "Installing veles python lib"
   )
