@@ -1,0 +1,49 @@
+// This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
+
+#include "dcmp_variable_length_integer.h"
+namespace veles {
+    namespace kaitai {
+
+        dcmp_variable_length_integer_t::dcmp_variable_length_integer_t(kaitai::kstream* p__io, kaitai::kstruct* p__parent, dcmp_variable_length_integer_t* p__root) : kaitai::kstruct(p__io) {
+            m__parent = p__parent;
+            m__root = p__root ? p__root : this;
+            f_value = false;
+            _read();
+        }
+
+        void dcmp_variable_length_integer_t::_read() {
+            m_first = m__io->read_u1();
+            n_more = true;
+            if (first() >= 128) {
+                n_more = false;
+                switch (first()) {
+                case 255: {
+                    m_more = m__io->read_s4be();
+                    break;
+                }
+                default: {
+                    m_more = m__io->read_u1();
+                    break;
+                }
+                }
+            }
+        }
+
+        dcmp_variable_length_integer_t::~dcmp_variable_length_integer_t() {
+            _clean_up();
+        }
+
+        void dcmp_variable_length_integer_t::_clean_up() {
+            if (!n_more) {
+            }
+        }
+
+        int32_t dcmp_variable_length_integer_t::value() {
+            if (f_value)
+                return m_value;
+            f_value = true;
+            m_value = ((first() == 255) ? (more()) : (((first() >= 128) ? ((first() << 8 | more()) - 49152) : (first()))));
+            return m_value;
+        }
+    }
+}
