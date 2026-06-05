@@ -98,6 +98,9 @@ class kstream {
   veles::dbif::ObjectHandle blob() { return obj_; }
   bool error() { return error_; }
 
+  template <typename I>
+  static std::string to_string(I val);
+
  private:
   veles::dbif::ObjectHandle obj_;
   veles::parser::StreamParser* parser_;

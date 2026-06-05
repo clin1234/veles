@@ -18,6 +18,7 @@
 #include "kaitai/kaitaistream.h"
 
 #include <cstring>
+#include <limits>
 
 namespace veles {
 namespace kaitai {
@@ -193,7 +194,7 @@ std::string kaitai::kstream::read_str_eos(const char* enc) {
     return "";
   }
   return bytes_to_str(parser_->getBytes(current_name_, parser_->bytesLeft()),
-                         enc);
+                      enc);
 }
 
 std::string kaitai::kstream::read_str_byte_limit(size_t len, const char* enc) {
@@ -254,7 +255,7 @@ std::string kaitai::kstream::ensure_fixed_contents(
 }
 
 std::string kaitai::kstream::bytes_to_str(const std::string& bytes,
-                                             const char* /*src_enc*/) {
+                                          const char* /*src_enc*/) {
   std::string res;
   for (auto byte : bytes) {
     res += byte;
@@ -276,6 +277,78 @@ void kaitai::kstream::popName() {
   } else {
     current_name_ = nullptr;
   }
+}
+
+void kaitai::kstream::unsigned_to_decimal(uint64_t number, char *buf, std::size_t &buf_contents_start) {
+    // Implementation inspired by https://ideone.com/nrQfA8 by Alf P. Steinbach
+    // (see https://vitaut.net/posts/2013/integer-to-string-conversion-in-cplusplus/)
+    do {
+        buf[--buf_contents_start] = static_cast<char>('0' + (number % 10));
+        number /= 10;
+    } while (number != 0);
+}
+
+template <typename I>
+static std::string kaitai::kstream::to_string(I val) {
+  // in theory, `digits10 + 3` would be enough (minus sign + leading digit
+  // + null terminator), but let's add a little more to be safe
+  char buf[std::numeric_limits<I>::digits10 + 5];
+  if (val < 0) {
+    buf[0] = '-';
+
+    // NB: `val` is negative and we need to get its absolute value (i.e. minus
+    // `val`). However, since `int64_t` uses two's complement representation,
+    // its range is `[-2**63, 2**63 - 1] =
+    // [-0x8000_0000_0000_0000, 0x7fff_ffff_ffff_ffff]` (both ends inclusive)
+    // and thus the naive
+    // `-val` operation will overflow for `val =
+    // std::numeric_limits<int64_t>::min() = -0x8000_0000_0000_0000` (because
+    // the result of `-val` is mathematically
+    // `-(-0x8000_0000_0000_0000) = 0x8000_0000_0000_0000`, but the `int64_t`
+    // type can represent at most `0x7fff_ffff_ffff_ffff`). And signed integer
+    // overflow is undefined behavior in C++.
+    //
+    // To avoid undefined behavior for `val = -0x8000_0000_0000_0000 = -2**63`,
+    // we do the following steps for all negative `val`s:
+    //
+    // 1. Convert the signed (and negative) `val` to an unsigned `uint64_t`
+    // type. This is a
+    //    well-defined operation in C++: the resulting `uint64_t` value will be
+    //    `val mod 2**64` (`mod` is modulo). The maximum `val` we can have here
+    //    is `-1` (because `val < 0`), a theoretical minimum we are able to
+    //    support would be `-2**64 + 1 = -0xffff_ffff_ffff_ffff` (even though in
+    //    practice the widest standard type is `int64_t` with the minimum of
+    //    `-2**63`):
+    //
+    //    * `static_cast<uint64_t>(-1) = -1 mod 2**64 = 2**64 + (-1) =
+    //    0xffff_ffff_ffff_ffff = 2**64 - 1`
+    //    * `static_cast<uint64_t>(-2**64 + 1) = (-2**64 + 1) mod 2**64 = 2**64
+    //    + (-2**64 + 1) = 1`
+    //
+    // 2. Subtract `static_cast<uint64_t>(val)` from `2**64 - 1 =
+    // 0xffff_ffff_ffff_ffff`. Since
+    //    `static_cast<uint64_t>(val)` is in range `[1, 2**64 - 1]` (see step
+    //    1), the result of this subtraction will be mathematically in range
+    //    `[0, (2**64 - 1) - 1] = [0, 2**64 - 2]`. So the mathematical result
+    //    cannot be negative, hence this unsigned integer subtraction can never
+    //    wrap around (which wouldn't be a good thing to rely upon because it
+    //    confuses programmers and code analysis tools).
+    //
+    // 3. Since we did mathematically `(2**64 - 1) - (2**64 + val) = -val - 1`
+    // so far (and we wanted
+    //    to do `-val`), we add `1` to correct that. From step 2 we know that
+    //    the result of `-val - 1` is in range `[0, 2**64 - 2]`, so adding `1`
+    //    will not wrap (at most we could get `2**64 - 1 =
+    //    0xffff_ffff_ffff_ffff`, which is still in the valid range of
+    //    `uint64_t`).
+
+    unsigned_to_decimal(
+        (std::numeric_limits<uint64_t>::max() - static_cast<uint64_t>(val)) + 1,
+        &buf[1]);
+  } else {
+    unsigned_to_decimal(val, buf);
+  }
+  return std::string(buf);
 }
 
 }  // namespace kaitai
