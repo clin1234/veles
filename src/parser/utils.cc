@@ -21,6 +21,7 @@
 #include "kaitai/bmp_parser.h"
 #include "kaitai/elf_parser.h"
 #include "kaitai/gif_parser.h"
+#include "kaitai/iso9660_parser.h"
 #include "kaitai/microsoft_pe_parser.h"
 #include "kaitai/png_parser.h"
 #include "kaitai/quicktime_mov_parser.h"
