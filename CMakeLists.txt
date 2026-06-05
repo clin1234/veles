@@ -94,7 +94,6 @@ set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(TEST_DIR ${CMAKE_SOURCE_DIR}/test)
 
 include_directories(${INCLUDE_DIR})
-include_directories("${INCLUDE_DIR}/kaitai")
 
 qt5_add_resources(VISUALIZATION_SHADERS ${SRC_DIR}/visualization/shaders/shaders.qrc)
 
@@ -134,10 +133,8 @@ add_custom_command(OUTPUT ${MSGPACK_CPP_HEADER} ${MSGPACK_CPP_SOURCE} ${MSGPACK_
     VERBATIM
 )
 
-add_compile_definitions(KAITAI_STREAM_H_CPP11_SUPPORT=1)
-
 file(GLOB KAITAI_HEADERS "${INCLUDE_DIR}/kaitai/*.h")
-file(GLOB KAITAI_SOURCES "${SRC_DIR}/kaitai/*.cpp")
+file(GLOB KAITAI_SOURCES "${SRC_DIR}/kaitai/*.cc")
 
 # Resources
 qt5_add_resources(RESOURCES resources/veles.qrc)
