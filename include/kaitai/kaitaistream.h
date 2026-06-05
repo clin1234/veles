@@ -87,6 +87,7 @@ class kstream {
 
   static std::string bytes_to_string(const std::vector<uint8_t>& bytes,
                                      const char* src_enc);
+  void seek(uint64_t pos);
 
   /** additional methods required by Veles */
   void pushName(const char* name);

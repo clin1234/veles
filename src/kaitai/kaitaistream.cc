@@ -39,6 +39,8 @@ veles::dbif::ObjectHandle kaitai::kstream::endChunk() {
   return parser_->endChunk();
 }
 
+void kaitai::kstream::seek(uint64_t pos) { parser_->seek(pos); }
+
 void kaitai::kstream::close() {}
 
 bool kaitai::kstream::is_eof() {
