@@ -46,8 +46,11 @@ args = parser.parse_args()
 logging.basicConfig(level=logging.getLevelName(args.log_level))
 
 logging.info('Świtezianka server is starting up...')
-loop = asyncio.new_event_loop()
-asyncio.set_event_loop(loop)
+try:
+    loop = asyncio.get_event_loop()
+except RuntimeError:
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
 logging.info('Opening database...')
 conn = AsyncLocalConnection(loop, args.database)
 logging.info('Loading plugins...')
