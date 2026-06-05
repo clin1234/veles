@@ -28,7 +28,7 @@ EXT_BIGINT = 2
 class MsgpackWrapper(object):
     def __init__(self):
         self.packer = msgpack.Packer(use_bin_type=True, default=MsgpackWrapper.pack_obj)
-        self.unpacker = msgpack.Unpacker(ext_hook=MsgpackWrapper.load_obj, max_buffer_size=sys.maxsize, max_buffer_size=400000000000)
+        self.unpacker = msgpack.Unpacker(ext_hook=MsgpackWrapper.load_obj, max_buffer_size=sys.maxsize)
 
     @classmethod
     def pack_obj(cls, obj):
