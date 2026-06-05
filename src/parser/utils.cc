@@ -74,6 +74,7 @@ QList<Parser*> createAllParsers() {
   res.append(new kaitai::BmpParser());
   res.append(new kaitai::AviParser());
   res.append(new kaitai::Quicktime_movParser());
+  res.append(new kaitai::ISO9660Parser());
   return res;
 }
 
