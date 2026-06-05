@@ -81,11 +81,11 @@ class kstream {
   std::string read_strz(const char* enc, char term, bool include, bool consume,
                         bool eos_error);
 
-  std::string read_bytes(size_t len);
-  std::string read_bytes_full();
-  std::string ensure_fixed_contents(const std::string& expected);
+  std::vector<uint8_t> read_bytes(size_t len);
+  std::vector<uint8_t> read_bytes_full();
+  std::vector<uint8_t> ensure_fixed_contents(const std::string& expected);
 
-  static std::string bytes_to_str(const std::string& bytes,
+  static std::string bytes_to_string(const std::vector<uint8_t>& bytes,
                                      const char* src_enc);
 
   /** additional methods required by Veles */
@@ -97,9 +97,6 @@ class kstream {
   veles::parser::StreamParser* parser() { return parser_; }
   veles::dbif::ObjectHandle blob() { return obj_; }
   bool error() { return error_; }
-
-  template <typename I>
-  static std::string to_string(I val);
 
  private:
   veles::dbif::ObjectHandle obj_;

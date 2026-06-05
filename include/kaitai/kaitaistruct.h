@@ -20,8 +20,6 @@
 
 #include "kaitai/kaitaistream.h"
 
-#define KAITAI_STRUCT_VERSION 11000L
-
 namespace veles {
 namespace kaitai {
 
