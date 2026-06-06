@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 namespace veles {
 namespace kaitai {
@@ -235,14 +236,14 @@ class gif_t : public kaitai::kstruct {
     ~header_t();
 
    private:
-    std::vector<uint8_t> m_magic;
-    std::vector<uint8_t> m_version;
+    std::string m_magic;
+    std::string m_version;
     gif_t* m__root;
     gif_t* m__parent;
 
    public:
-    std::vector<uint8_t> magic() const { return m_magic; }
-    std::vector<uint8_t> version() const { return m_version; }
+    std::string magic() const { return m_magic; }
+    std::string version() const { return m_version; }
     gif_t* _root() const { return m__root; }
     gif_t* _parent() const { return m__parent; }
   };
@@ -270,20 +271,20 @@ class gif_t : public kaitai::kstruct {
     bool user_input_flag();
 
    private:
-    std::vector<uint8_t> m_block_size;
+    std::string m_block_size;
     uint8_t m_flags;
     uint16_t m_delay_time;
     uint8_t m_transparent_idx;
-    std::vector<uint8_t> m_terminator;
+    std::string m_terminator;
     gif_t* m__root;
     gif_t::extension_t* m__parent;
 
    public:
-    std::vector<uint8_t> block_size() const { return m_block_size; }
+    std::string block_size() const { return m_block_size; }
     uint8_t flags() const { return m_flags; }
     uint16_t delay_time() const { return m_delay_time; }
     uint8_t transparent_idx() const { return m_transparent_idx; }
-    std::vector<uint8_t> terminator() const { return m_terminator; }
+    std::string terminator() const { return m_terminator; }
     gif_t* _root() const { return m__root; }
     gif_t::extension_t* _parent() const { return m__parent; }
   };
@@ -298,13 +299,13 @@ class gif_t : public kaitai::kstruct {
 
    private:
     uint8_t m_num_bytes;
-    std::vector<uint8_t> m_bytes;
+    std::string m_bytes;
     gif_t* m__root;
     kaitai::kstruct* m__parent;
 
    public:
     uint8_t num_bytes() const { return m_num_bytes; }
-    std::vector<uint8_t> bytes() const { return m_bytes; }
+    std::string bytes() const { return m_bytes; }
     gif_t* _root() const { return m__root; }
     kaitai::kstruct* _parent() const { return m__parent; }
   };
@@ -386,7 +387,7 @@ class gif_t : public kaitai::kstruct {
   std::vector<block_t*>* m_blocks;
   gif_t* m__root;
   kaitai::kstruct* m__parent;
-  std::vector<uint8_t> m__skip_me_global_color_table;
+  std::string m__skip_me_global_color_table;
   kaitai::kstream* m__io__skip_me_global_color_table;
 
  public:
@@ -400,7 +401,7 @@ class gif_t : public kaitai::kstruct {
   std::vector<block_t*>* blocks() const { return m_blocks; }
   gif_t* _root() const { return m__root; }
   kaitai::kstruct* _parent() const { return m__parent; }
-  std::vector<uint8_t> _skip_me_global_color_table() const {
+  std::string _skip_me_global_color_table() const {
     return m__skip_me_global_color_table;
   }
   kaitai::kstream* _io__skip_me_global_color_table() const {

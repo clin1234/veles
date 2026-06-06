@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 namespace veles {
 namespace kaitai {
@@ -324,10 +325,10 @@ class microsoft_pe_t : public kaitai::kstruct {
 
    private:
     bool f_body;
-    std::vector<uint8_t> m_body;
+    std::string m_body;
 
    public:
-    std::vector<uint8_t> body();
+    std::string body();
 
    private:
     std::string m_name;
@@ -367,15 +368,15 @@ class microsoft_pe_t : public kaitai::kstruct {
     ~mz_placeholder_t();
 
    private:
-    std::vector<uint8_t> m_magic;
-    std::vector<uint8_t> m_data1;
+    std::string m_magic;
+    std::string m_data1;
     uint32_t m_header_size;
     microsoft_pe_t* m__root;
     microsoft_pe_t* m__parent;
 
    public:
-    std::vector<uint8_t> magic() const { return m_magic; }
-    std::vector<uint8_t> data1() const { return m_data1; }
+    std::string magic() const { return m_magic; }
+    std::string data1() const { return m_data1; }
     uint32_t header_size() const { return m_header_size; }
     microsoft_pe_t* _root() const { return m__root; }
     microsoft_pe_t* _parent() const { return m__parent; }
@@ -500,26 +501,26 @@ class microsoft_pe_t : public kaitai::kstruct {
 
  private:
   mz_placeholder_t* m_mz1;
-  std::vector<uint8_t> m_mz2;
-  std::vector<uint8_t> m_pe_signature;
+  std::string m_mz2;
+  std::string m_pe_signature;
   coff_header_t* m_coff_header;
   optional_header_t* m_optional_header;
   std::vector<section_t*>* m_sections;
   microsoft_pe_t* m__root;
   kaitai::kstruct* m__parent;
-  std::vector<uint8_t> m__skip_me_optional_header;
+  std::string m__skip_me_optional_header;
   kaitai::kstream* m__io__skip_me_optional_header;
 
  public:
   mz_placeholder_t* mz1() const { return m_mz1; }
-  std::vector<uint8_t> mz2() const { return m_mz2; }
-  std::vector<uint8_t> pe_signature() const { return m_pe_signature; }
+  std::string mz2() const { return m_mz2; }
+  std::string pe_signature() const { return m_pe_signature; }
   coff_header_t* coff_header() const { return m_coff_header; }
   optional_header_t* optional_header() const { return m_optional_header; }
   std::vector<section_t*>* sections() const { return m_sections; }
   microsoft_pe_t* _root() const { return m__root; }
   kaitai::kstruct* _parent() const { return m__parent; }
-  std::vector<uint8_t> _skip_me_optional_header() const {
+  std::string _skip_me_optional_header() const {
     return m__skip_me_optional_header;
   }
   kaitai::kstream* _io__skip_me_optional_header() const {

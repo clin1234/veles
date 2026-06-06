@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 namespace veles {
 namespace kaitai {
@@ -175,15 +176,15 @@ class quicktime_mov_t : public kaitai::kstruct {
 
    private:
     uint8_t m_version;
-    std::vector<uint8_t> m_flags;
+    std::string m_flags;
     uint32_t m_creation_time;
     uint32_t m_modification_time;
     uint32_t m_time_scale;
     uint32_t m_duration;
     fixed32_t* m_preferred_rate;
     fixed16_t* m_preferred_volume;
-    std::vector<uint8_t> m_reserved1;
-    std::vector<uint8_t> m_matrix;
+    std::string m_reserved1;
+    std::string m_matrix;
     uint32_t m_preview_time;
     uint32_t m_preview_duration;
     uint32_t m_poster_time;
@@ -199,7 +200,7 @@ class quicktime_mov_t : public kaitai::kstruct {
      * Version of this movie header atom
      */
     uint8_t version() const { return m_version; }
-    std::vector<uint8_t> flags() const { return m_flags; }
+    std::string flags() const { return m_flags; }
     uint32_t creation_time() const { return m_creation_time; }
     uint32_t modification_time() const { return m_modification_time; }
 
@@ -232,12 +233,12 @@ class quicktime_mov_t : public kaitai::kstruct {
      * volume.
      */
     fixed16_t* preferred_volume() const { return m_preferred_volume; }
-    std::vector<uint8_t> reserved1() const { return m_reserved1; }
+    std::string reserved1() const { return m_reserved1; }
 
     /**
      * A matrix shows how to map points from one coordinate space into another.
      */
-    std::vector<uint8_t> matrix() const { return m_matrix; }
+    std::string matrix() const { return m_matrix; }
 
     /**
      * The time value in the movie at which the preview begins.
@@ -288,14 +289,14 @@ class quicktime_mov_t : public kaitai::kstruct {
 
    private:
     brand_t m_major_brand;
-    std::vector<uint8_t> m_minor_version;
+    std::string m_minor_version;
     std::vector<brand_t>* m_compatible_brands;
     quicktime_mov_t* m__root;
     quicktime_mov_t::atom_t* m__parent;
 
    public:
     brand_t major_brand() const { return m_major_brand; }
-    std::vector<uint8_t> minor_version() const { return m_minor_version; }
+    std::string minor_version() const { return m_minor_version; }
     std::vector<brand_t>* compatible_brands() const {
       return m_compatible_brands;
     }
@@ -375,7 +376,7 @@ class quicktime_mov_t : public kaitai::kstruct {
     kaitai::kstruct* m_body;
     quicktime_mov_t* m__root;
     quicktime_mov_t* m__parent;
-    std::vector<uint8_t> m__skip_me_body;
+    std::string m__skip_me_body;
     kaitai::kstream* m__io__skip_me_body;
 
    public:
@@ -385,7 +386,7 @@ class quicktime_mov_t : public kaitai::kstruct {
     kaitai::kstruct* body() const { return m_body; }
     quicktime_mov_t* _root() const { return m__root; }
     quicktime_mov_t* _parent() const { return m__parent; }
-    std::vector<uint8_t> _skip_me_body() const { return m__skip_me_body; }
+    std::string _skip_me_body() const { return m__skip_me_body; }
     kaitai::kstream* _io__skip_me_body() const { return m__io__skip_me_body; }
   };
 
@@ -399,18 +400,18 @@ class quicktime_mov_t : public kaitai::kstruct {
 
    private:
     uint8_t m_version;
-    std::vector<uint8_t> m_flags;
+    std::string m_flags;
     uint32_t m_creation_time;
     uint32_t m_modification_time;
     uint32_t m_track_id;
-    std::vector<uint8_t> m_reserved1;
+    std::string m_reserved1;
     uint32_t m_duration;
-    std::vector<uint8_t> m_reserved2;
+    std::string m_reserved2;
     uint16_t m_layer;
     uint16_t m_alternative_group;
     uint16_t m_volume;
     uint16_t m_reserved3;
-    std::vector<uint8_t> m_matrix;
+    std::string m_matrix;
     fixed32_t* m_width;
     fixed32_t* m_height;
     quicktime_mov_t* m__root;
@@ -418,7 +419,7 @@ class quicktime_mov_t : public kaitai::kstruct {
 
    public:
     uint8_t version() const { return m_version; }
-    std::vector<uint8_t> flags() const { return m_flags; }
+    std::string flags() const { return m_flags; }
     uint32_t creation_time() const { return m_creation_time; }
     uint32_t modification_time() const { return m_modification_time; }
 
@@ -426,14 +427,14 @@ class quicktime_mov_t : public kaitai::kstruct {
      * Integer that uniquely identifies the track. The value 0 cannot be used.
      */
     uint32_t track_id() const { return m_track_id; }
-    std::vector<uint8_t> reserved1() const { return m_reserved1; }
+    std::string reserved1() const { return m_reserved1; }
     uint32_t duration() const { return m_duration; }
-    std::vector<uint8_t> reserved2() const { return m_reserved2; }
+    std::string reserved2() const { return m_reserved2; }
     uint16_t layer() const { return m_layer; }
     uint16_t alternative_group() const { return m_alternative_group; }
     uint16_t volume() const { return m_volume; }
     uint16_t reserved3() const { return m_reserved3; }
-    std::vector<uint8_t> matrix() const { return m_matrix; }
+    std::string matrix() const { return m_matrix; }
     fixed32_t* width() const { return m_width; }
     fixed32_t* height() const { return m_height; }
     quicktime_mov_t* _root() const { return m__root; }

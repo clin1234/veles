@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 namespace veles {
 namespace kaitai {
@@ -131,20 +132,20 @@ class elf_t : public kaitai::kstruct {
     ~file_header_t();
 
    private:
-    std::vector<uint8_t> m_magic;
+    std::string m_magic;
     bits_t m_bits;
     endian_t m_endian;
     uint8_t m_ei_version;
     os_abi_t m_abi;
     uint8_t m_abi_version;
-    std::vector<uint8_t> m_pad;
+    std::string m_pad;
     obj_type_t m_e_type;
     machine_t m_machine;
     uint32_t m_e_version;
     uint64_t m_entry_point;
     uint64_t m_program_header_offset;
     uint64_t m_section_header_offset;
-    std::vector<uint8_t> m_flags;
+    std::string m_flags;
     uint16_t m_e_ehsize;
     uint16_t m_program_header_entry_size;
     uint16_t m_qty_program_header;
@@ -158,7 +159,7 @@ class elf_t : public kaitai::kstruct {
     /**
      * File identification, must be 0x7f + "ELF".
      */
-    std::vector<uint8_t> magic() const { return m_magic; }
+    std::string magic() const { return m_magic; }
 
     /**
      * File class: designates target machine word size (32 or 64 bits). The size
@@ -190,14 +191,14 @@ class elf_t : public kaitai::kstruct {
 
      */
     uint8_t abi_version() const { return m_abi_version; }
-    std::vector<uint8_t> pad() const { return m_pad; }
+    std::string pad() const { return m_pad; }
     obj_type_t e_type() const { return m_e_type; }
     machine_t machine() const { return m_machine; }
     uint32_t e_version() const { return m_e_version; }
     uint64_t entry_point() const { return m_entry_point; }
     uint64_t program_header_offset() const { return m_program_header_offset; }
     uint64_t section_header_offset() const { return m_section_header_offset; }
-    std::vector<uint8_t> flags() const { return m_flags; }
+    std::string flags() const { return m_flags; }
     uint16_t e_ehsize() const { return m_e_ehsize; }
     uint16_t program_header_entry_size() const {
       return m_program_header_entry_size;
@@ -273,10 +274,10 @@ class elf_t : public kaitai::kstruct {
 
    private:
     bool f_body;
-    std::vector<uint8_t> m_body;
+    std::string m_body;
 
    public:
-    std::vector<uint8_t> body();
+    std::string body();
 
    private:
     bool f_name;
@@ -293,7 +294,7 @@ class elf_t : public kaitai::kstruct {
     uint64_t m_offset;
     uint64_t m_size;
     uint32_t m_linked_section_idx;
-    std::vector<uint8_t> m_info;
+    std::string m_info;
     uint64_t m_align;
     uint64_t m_entry_size;
     elf_t* m__root;
@@ -307,7 +308,7 @@ class elf_t : public kaitai::kstruct {
     uint64_t offset() const { return m_offset; }
     uint64_t size() const { return m_size; }
     uint32_t linked_section_idx() const { return m_linked_section_idx; }
-    std::vector<uint8_t> info() const { return m_info; }
+    std::string info() const { return m_info; }
     uint64_t align() const { return m_align; }
     uint64_t entry_size() const { return m_entry_size; }
     elf_t* _root() const { return m__root; }
@@ -357,30 +358,30 @@ class elf_t : public kaitai::kstruct {
   file_header_t* m_file_header;
   elf_t* m__root;
   kaitai::kstruct* m__parent;
-  std::vector<std::vector<uint8_t>>* m__skip_me_program_headers;
+  std::vector<std::string>* m__skip_me_program_headers;
   kaitai::kstream* m__io__skip_me_program_headers;
-  std::vector<std::vector<uint8_t>>* m__skip_me_section_headers;
+  std::vector<std::string>* m__skip_me_section_headers;
   kaitai::kstream* m__io__skip_me_section_headers;
-  std::vector<uint8_t> m__skip_me_strings;
+  std::string m__skip_me_strings;
   kaitai::kstream* m__io__skip_me_strings;
 
  public:
   file_header_t* file_header() const { return m_file_header; }
   elf_t* _root() const { return m__root; }
   kaitai::kstruct* _parent() const { return m__parent; }
-  std::vector<std::vector<uint8_t>>* _skip_me_program_headers() const {
+  std::vector<std::string>* _skip_me_program_headers() const {
     return m__skip_me_program_headers;
   }
   kaitai::kstream* _io__skip_me_program_headers() const {
     return m__io__skip_me_program_headers;
   }
-  std::vector<std::vector<uint8_t>>* _skip_me_section_headers() const {
+  std::vector<std::string>* _skip_me_section_headers() const {
     return m__skip_me_section_headers;
   }
   kaitai::kstream* _io__skip_me_section_headers() const {
     return m__io__skip_me_section_headers;
   }
-  std::vector<uint8_t> _skip_me_strings() const { return m__skip_me_strings; }
+  std::string _skip_me_strings() const { return m__skip_me_strings; }
   kaitai::kstream* _io__skip_me_strings() const {
     return m__io__skip_me_strings;
   }
