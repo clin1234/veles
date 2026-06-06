@@ -310,5 +310,13 @@ void kaitai::kstream::popName() {
   }
 }
 
+uint32_t kaitai::kstream::mod(uint32_t a, uint32_t b) {
+  auto m = a % b;
+  if (m < 0) {
+    m = (b < 0) ? m - b : m + b;
+  }
+  return m;
+}
+
 }  // namespace kaitai
 }  // namespace veles

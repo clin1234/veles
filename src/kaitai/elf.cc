@@ -382,7 +382,7 @@ elf_t::section_header_t::section_header_t(kaitai::kstream* p_io,
 
 elf_t::section_header_t::~section_header_t() {}
 
-std::vector<uint8_t> elf_t::section_header_t::body() {
+std::string elf_t::section_header_t::body() {
   if (f_body) {
     return m_body;
   }

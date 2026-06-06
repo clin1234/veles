@@ -223,7 +223,7 @@ bmp_t::bitmap_info_header_t::bitmap_info_header_t(kaitai::kstream* p_io,
 
 bmp_t::bitmap_info_header_t::~bitmap_info_header_t() {}
 
-std::vector<uint8_t> bmp_t::image() {
+std::string bmp_t::image() {
   if (f_image) {
     return m_image;
   }
