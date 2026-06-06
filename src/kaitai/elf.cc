@@ -459,7 +459,7 @@ std::vector<elf_t::program_header_t*>* elf_t::program_headers() {
                               0, saved_io->error());
   veles_obj = m__io->startChunk(saved_io->currentName());
   int l_program_headers = file_header()->qty_program_header();
-  m__skip_me_program_headers = new std::vector<std::vector<uint8_t>>();
+  m__skip_me_program_headers = new std::vector<std::string>();
   m__skip_me_program_headers->reserve(l_program_headers);
   m_program_headers = new std::vector<program_header_t*>();
   m_program_headers->reserve(l_program_headers);
@@ -505,7 +505,7 @@ std::vector<elf_t::section_header_t*>* elf_t::section_headers() {
                               0, saved_io->error());
   veles_obj = m__io->startChunk(saved_io->currentName());
   int l_section_headers = file_header()->qty_section_header();
-  m__skip_me_section_headers = new std::vector<std::vector<uint8_t>>();
+  m__skip_me_section_headers = new std::vector<std::string>();
   m__skip_me_section_headers->reserve(l_section_headers);
   m_section_headers = new std::vector<section_header_t*>();
   m_section_headers->reserve(l_section_headers);
