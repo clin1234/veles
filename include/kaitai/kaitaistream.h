@@ -98,6 +98,7 @@ class kstream {
   veles::parser::StreamParser* parser() { return parser_; }
   veles::dbif::ObjectHandle blob() { return obj_; }
   bool error() { return error_; }
+  static uint32_t mod(uint32_t, uint32_t);
 
  private:
   veles::dbif::ObjectHandle obj_;
