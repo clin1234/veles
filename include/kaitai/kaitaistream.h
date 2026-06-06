@@ -41,6 +41,7 @@ class kstream {
                    const veles::dbif::ObjectHandle& parent_chunk =
                        veles::dbif::ObjectHandle(),
                    uint64_t max_size = 0, bool error = false);
+  explicit kstream(const std::string& data);
   ~kstream();
 
   /** Kaitai Struct Stream API methods */
@@ -81,9 +82,9 @@ class kstream {
   std::string read_strz(const char* enc, char term, bool include, bool consume,
                         bool eos_error);
 
-  std::vector<uint8_t> read_bytes(size_t len);
-  std::vector<uint8_t> read_bytes_full();
-  std::vector<uint8_t> ensure_fixed_contents(const std::string& expected);
+  std::string read_bytes(size_t len);
+  std::string read_bytes_full();
+  std::string ensure_fixed_contents(const std::string& expected);
 
   static std::string bytes_to_string(const std::vector<uint8_t>& bytes,
                                      const char* src_enc);
@@ -105,6 +106,14 @@ class kstream {
   const char* current_name_;
   bool error_;
   uint64_t max_size_;
+
+  // Used only when constructed from a std::string (no StreamParser).
+  // startChunk/endChunk are no-ops in this mode; sub-chunks are not
+  // recorded in the Veles chunk tree.
+  std::string data_;
+  uint64_t data_pos_;
+  std::string data_read(size_t n);
+  uint64_t data_uint(size_t n, bool little_endian);
 };
 
 }  // namespace kaitai
