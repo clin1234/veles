@@ -72,7 +72,7 @@ void FileBlobItem::dataUpdatedHandle(FileBlobItem* item) {
     children_.clear();
     emit removingChildren(this, false);
 
-    emit insertingChildren(this, true, children_.size());
+    emit insertingChildren(this, true, childrenCopy.size());
     children_ = childrenCopy;
     emit insertingChildren(this, false, children_.size());
   }

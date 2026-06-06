@@ -378,7 +378,7 @@ microsoft_pe_t::section_t::section_t(kaitai::kstream* p_io,
 
 microsoft_pe_t::section_t::~section_t() {}
 
-std::vector<uint8_t> microsoft_pe_t::section_t::body() {
+std::string microsoft_pe_t::section_t::body() {
   if (f_body) {
     return m_body;
   }

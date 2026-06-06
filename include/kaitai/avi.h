@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 namespace veles {
 namespace kaitai {
@@ -146,7 +147,7 @@ class avi_t : public kaitai::kstruct {
     uint32_t m_suggested_buffer_size;
     uint32_t m_width;
     uint32_t m_height;
-    std::vector<uint8_t> m_reserved;
+    std::string m_reserved;
     avi_t* m__root;
     avi_t::block_t* m__parent;
 
@@ -161,7 +162,7 @@ class avi_t : public kaitai::kstruct {
     uint32_t suggested_buffer_size() const { return m_suggested_buffer_size; }
     uint32_t width() const { return m_width; }
     uint32_t height() const { return m_height; }
-    std::vector<uint8_t> reserved() const { return m_reserved; }
+    std::string reserved() const { return m_reserved; }
     avi_t* _root() const { return m__root; }
     avi_t::block_t* _parent() const { return m__parent; }
   };
@@ -179,7 +180,7 @@ class avi_t : public kaitai::kstruct {
     kaitai::kstruct* m_data;
     avi_t* m__root;
     avi_t::blocks_t* m__parent;
-    std::vector<uint8_t> m__skip_me_data;
+    std::string m__skip_me_data;
     kaitai::kstream* m__io__skip_me_data;
 
    public:
@@ -188,7 +189,7 @@ class avi_t : public kaitai::kstruct {
     kaitai::kstruct* data() const { return m_data; }
     avi_t* _root() const { return m__root; }
     avi_t::blocks_t* _parent() const { return m__parent; }
-    std::vector<uint8_t> _skip_me_data() const { return m__skip_me_data; }
+    std::string _skip_me_data() const { return m__skip_me_data; }
     kaitai::kstream* _io__skip_me_data() const { return m__io__skip_me_data; }
   };
 
@@ -271,23 +272,23 @@ class avi_t : public kaitai::kstruct {
   };
 
  private:
-  std::vector<uint8_t> m_magic1;
+  std::string m_magic1;
   uint32_t m_file_size;
-  std::vector<uint8_t> m_magic2;
+  std::string m_magic2;
   blocks_t* m_data;
   avi_t* m__root;
   kaitai::kstruct* m__parent;
-  std::vector<uint8_t> m__skip_me_data;
+  std::string m__skip_me_data;
   kaitai::kstream* m__io__skip_me_data;
 
  public:
-  std::vector<uint8_t> magic1() const { return m_magic1; }
+  std::string magic1() const { return m_magic1; }
   uint32_t file_size() const { return m_file_size; }
-  std::vector<uint8_t> magic2() const { return m_magic2; }
+  std::string magic2() const { return m_magic2; }
   blocks_t* data() const { return m_data; }
   avi_t* _root() const { return m__root; }
   kaitai::kstruct* _parent() const { return m__parent; }
-  std::vector<uint8_t> _skip_me_data() const { return m__skip_me_data; }
+  std::string _skip_me_data() const { return m__skip_me_data; }
   kaitai::kstream* _io__skip_me_data() const { return m__io__skip_me_data; }
 };
 

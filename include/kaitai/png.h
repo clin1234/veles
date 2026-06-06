@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 namespace veles {
 namespace kaitai {
@@ -81,20 +82,20 @@ class png_t : public kaitai::kstruct {
     uint32_t m_len;
     std::string m_type;
     kaitai::kstruct* m_body;
-    std::vector<uint8_t> m_crc;
+    std::string m_crc;
     png_t* m__root;
     png_t* m__parent;
-    std::vector<uint8_t> m__skip_me_body;
+    std::string m__skip_me_body;
     kaitai::kstream* m__io__skip_me_body;
 
    public:
     uint32_t len() const { return m_len; }
     std::string type() const { return m_type; }
     kaitai::kstruct* body() const { return m_body; }
-    std::vector<uint8_t> crc() const { return m_crc; }
+    std::string crc() const { return m_crc; }
     png_t* _root() const { return m__root; }
     png_t* _parent() const { return m__parent; }
-    std::vector<uint8_t> _skip_me_body() const { return m__skip_me_body; }
+    std::string _skip_me_body() const { return m__skip_me_body; }
     kaitai::kstream* _io__skip_me_body() const { return m__io__skip_me_body; }
   };
 
@@ -413,21 +414,21 @@ class png_t : public kaitai::kstruct {
   };
 
  private:
-  std::vector<uint8_t> m_magic;
-  std::vector<uint8_t> m_ihdr_len;
-  std::vector<uint8_t> m_ihdr_type;
+  std::string m_magic;
+  std::string m_ihdr_len;
+  std::string m_ihdr_type;
   ihdr_chunk_t* m_ihdr;
-  std::vector<uint8_t> m_ihdr_crc;
+  std::string m_ihdr_crc;
   std::vector<chunk_t*>* m_chunks;
   png_t* m__root;
   kaitai::kstruct* m__parent;
 
  public:
-  std::vector<uint8_t> magic() const { return m_magic; }
-  std::vector<uint8_t> ihdr_len() const { return m_ihdr_len; }
-  std::vector<uint8_t> ihdr_type() const { return m_ihdr_type; }
+  std::string magic() const { return m_magic; }
+  std::string ihdr_len() const { return m_ihdr_len; }
+  std::string ihdr_type() const { return m_ihdr_type; }
   ihdr_chunk_t* ihdr() const { return m_ihdr; }
-  std::vector<uint8_t> ihdr_crc() const { return m_ihdr_crc; }
+  std::string ihdr_crc() const { return m_ihdr_crc; }
   std::vector<chunk_t*>* chunks() const { return m_chunks; }
   png_t* _root() const { return m__root; }
   kaitai::kstruct* _parent() const { return m__parent; }

@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 namespace veles {
 namespace kaitai {
@@ -34,7 +35,7 @@ class bmp_t : public kaitai::kstruct {
     ~file_header_t();
 
    private:
-    std::vector<uint8_t> m_file_type;
+    std::string m_file_type;
     uint32_t m_file_size;
     uint16_t m_reserved1;
     uint16_t m_reserved2;
@@ -43,7 +44,7 @@ class bmp_t : public kaitai::kstruct {
     bmp_t* m__parent;
 
    public:
-    std::vector<uint8_t> file_type() const { return m_file_type; }
+    std::string file_type() const { return m_file_type; }
     uint32_t file_size() const { return m_file_size; }
     uint16_t reserved1() const { return m_reserved1; }
     uint16_t reserved2() const { return m_reserved2; }
@@ -91,7 +92,7 @@ class bmp_t : public kaitai::kstruct {
     };
 
    private:
-    std::vector<uint8_t> m_dib_header_body;
+    std::string m_dib_header_body;
     bool n_dib_header_body;
 
    public:
@@ -103,11 +104,11 @@ class bmp_t : public kaitai::kstruct {
    private:
     bmp_t* m__root;
     bmp_t* m__parent;
-    std::vector<uint8_t> m__skip_me_bitmap_core_header;
+    std::string m__skip_me_bitmap_core_header;
     kaitai::kstream* m__io__skip_me_bitmap_core_header;
-    std::vector<uint8_t> m__skip_me_bitmap_info_header;
+    std::string m__skip_me_bitmap_info_header;
     kaitai::kstream* m__io__skip_me_bitmap_info_header;
-    std::vector<uint8_t> m__skip_me_bitmap_v5_header;
+    std::string m__skip_me_bitmap_v5_header;
     kaitai::kstream* m__io__skip_me_bitmap_v5_header;
 
    public:
@@ -121,22 +122,22 @@ class bmp_t : public kaitai::kstruct {
     bitmap_core_header_t* bitmap_v5_header() const {
       return m_bitmap_v5_header;
     }
-    std::vector<uint8_t> dib_header_body() const { return m_dib_header_body; }
+    std::string dib_header_body() const { return m_dib_header_body; }
     bmp_t* _root() const { return m__root; }
     bmp_t* _parent() const { return m__parent; }
-    std::vector<uint8_t> _skip_me_bitmap_core_header() const {
+    std::string _skip_me_bitmap_core_header() const {
       return m__skip_me_bitmap_core_header;
     }
     kaitai::kstream* _io__skip_me_bitmap_core_header() const {
       return m__io__skip_me_bitmap_core_header;
     }
-    std::vector<uint8_t> _skip_me_bitmap_info_header() const {
+    std::string _skip_me_bitmap_info_header() const {
       return m__skip_me_bitmap_info_header;
     }
     kaitai::kstream* _io__skip_me_bitmap_info_header() const {
       return m__io__skip_me_bitmap_info_header;
     }
-    std::vector<uint8_t> _skip_me_bitmap_v5_header() const {
+    std::string _skip_me_bitmap_v5_header() const {
       return m__skip_me_bitmap_v5_header;
     }
     kaitai::kstream* _io__skip_me_bitmap_v5_header() const {
@@ -208,10 +209,10 @@ class bmp_t : public kaitai::kstruct {
 
  private:
   bool f_image;
-  std::vector<uint8_t> m_image;
+  std::string m_image;
 
  public:
-  std::vector<uint8_t> image();
+  std::string image();
 
  private:
   file_header_t* m_file_header;

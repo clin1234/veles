@@ -114,7 +114,7 @@ FileBlobModel::FileBlobModel(const dbif::ObjectHandle& fileBlob,
   connect(item_, &FileBlobItem::insertingChildren,
           [this](FileBlobItem* item, bool isBefore, int count) {
             if (isBefore) {
-              beginInsertRows(indexFromItem(item), 0, count);
+              beginInsertRows(indexFromItem(item), 0, count - 1);
             } else {
               endInsertRows();
               emitDataChanged(item);

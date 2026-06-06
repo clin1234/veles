@@ -8,6 +8,7 @@
 #include <kaitai/kaitaistruct.h>
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace veles {
@@ -55,13 +56,13 @@ class zip_t : public kaitai::kstruct {
 
    private:
     local_file_header_t* m_header;
-    std::vector<uint8_t> m_body;
+    std::string m_body;
     zip_t* m__root;
     zip_t::pk_section_t* m__parent;
 
    public:
     local_file_header_t* header() const { return m_header; }
-    std::vector<uint8_t> body() const { return m_body; }
+    std::string body() const { return m_body; }
     zip_t* _root() const { return m__root; }
     zip_t::pk_section_t* _parent() const { return m__parent; }
   };
@@ -92,7 +93,7 @@ class zip_t : public kaitai::kstruct {
     uint32_t m_ext_file_attr;
     int32_t m_local_header_offset;
     std::string m_file_name;
-    std::vector<uint8_t> m_extra;
+    std::string m_extra;
     std::string m_comment;
     zip_t* m__root;
     zip_t::pk_section_t* m__parent;
@@ -117,7 +118,7 @@ class zip_t : public kaitai::kstruct {
     uint32_t ext_file_attr() const { return m_ext_file_attr; }
     int32_t local_header_offset() const { return m_local_header_offset; }
     std::string file_name() const { return m_file_name; }
-    std::vector<uint8_t> extra() const { return m_extra; }
+    std::string extra() const { return m_extra; }
     std::string comment() const { return m_comment; }
     zip_t* _root() const { return m__root; }
     zip_t::pk_section_t* _parent() const { return m__parent; }
@@ -131,14 +132,14 @@ class zip_t : public kaitai::kstruct {
     ~pk_section_t();
 
    private:
-    std::vector<uint8_t> m_magic;
+    std::string m_magic;
     uint16_t m_section_type;
     kaitai::kstruct* m_body;
     zip_t* m__root;
     zip_t* m__parent;
 
    public:
-    std::vector<uint8_t> magic() const { return m_magic; }
+    std::string magic() const { return m_magic; }
     uint16_t section_type() const { return m_section_type; }
     kaitai::kstruct* body() const { return m_body; }
     zip_t* _root() const { return m__root; }
@@ -165,7 +166,7 @@ class zip_t : public kaitai::kstruct {
     uint16_t m_file_name_len;
     uint16_t m_extra_len;
     std::string m_file_name;
-    std::vector<uint8_t> m_extra;
+    std::string m_extra;
     zip_t* m__root;
     zip_t::local_file_t* m__parent;
 
@@ -181,7 +182,7 @@ class zip_t : public kaitai::kstruct {
     uint16_t file_name_len() const { return m_file_name_len; }
     uint16_t extra_len() const { return m_extra_len; }
     std::string file_name() const { return m_file_name; }
-    std::vector<uint8_t> extra() const { return m_extra; }
+    std::string extra() const { return m_extra; }
     zip_t* _root() const { return m__root; }
     zip_t::local_file_t* _parent() const { return m__parent; }
   };

@@ -35,4 +35,6 @@ class kstruct {
 }  // namespace kaitai
 }  // namespace veles
 
+namespace kaitai = veles::kaitai;
+
 #endif  // VELES_KAITAI_KAITAISTRUCT_H

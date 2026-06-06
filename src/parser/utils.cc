@@ -21,6 +21,7 @@
 #include "kaitai/bmp_parser.h"
 #include "kaitai/elf_parser.h"
 #include "kaitai/gif_parser.h"
+#include "kaitai/iso9660_parser.h"
 #include "kaitai/microsoft_pe_parser.h"
 #include "kaitai/png_parser.h"
 #include "kaitai/quicktime_mov_parser.h"
@@ -74,6 +75,7 @@ QList<Parser*> createAllParsers() {
   res.append(new kaitai::BmpParser());
   res.append(new kaitai::AviParser());
   res.append(new kaitai::Quicktime_movParser());
+  res.append(new kaitai::ISO9660Parser());
   return res;
 }
 
