@@ -310,7 +310,7 @@ void kaitai::kstream::popName() {
   }
 }
 
-static uint32_t kaitai::kstream::mod(uint32_t a, uint32_t b) {
+uint32_t kaitai::kstream::mod(uint32_t a, uint32_t b) {
   auto m = a % b;
   if (m < 0) {
     m = (b < 0) ? m - b : m + b;
