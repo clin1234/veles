@@ -146,6 +146,7 @@ public:
     public:
 
         datetime_t(kaitai::kstream* p_io, iso9660_t::dir_entry_body_t* p_parent = 0, iso9660_t* p_root = 0);
+        veles::dbif::ObjectHandle veles_obj;
         ~datetime_t();
 
     private:

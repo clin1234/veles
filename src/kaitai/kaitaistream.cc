@@ -274,6 +274,7 @@ std::string kaitai::kstream::read_bytes(size_t len) {
 std::string kaitai::kstream::read_bytes_full() {
   if (error_) return {};
   if (parser_ == nullptr) return data_read(data_.size() - data_pos_);
+  if (max_size_ != 0) return read_bytes(max_size_ - pos());
   return read_bytes(parser_->bytesLeft());
 }
 
