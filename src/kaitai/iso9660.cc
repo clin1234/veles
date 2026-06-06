@@ -96,6 +96,8 @@ iso9660_t::vol_desc_primary_t::vol_desc_primary_t(
   m__io->pushName("root_dir");
   m_root_dir = new dir_entry_t(m__io__raw_root_dir, this, m__root);
   m__io->popName();
+  m__io->addSubchunkItem(m__io->pos() - m__raw_root_dir.size(), m__io->pos(),
+                         "root_dir", m_root_dir->veles_obj);
   m__io->pushName("vol_set_id");
   m_vol_set_id = m__io->read_str_byte_limit(128, "UTF-8");
   m__io->popName();
@@ -178,6 +180,8 @@ iso9660_t::path_table_le_t* iso9660_t::vol_desc_primary_t::path_table() {
   m__io->pushName("path_table");
   m_path_table = new path_table_le_t(m__io__raw_path_table, this, m__root);
   m__io->popName();
+  m__io->addSubchunkItem(m__io->pos() - m__raw_path_table.size(), m__io->pos(),
+                         "path_table", m_path_table->veles_obj);
   m__io->seek(_pos);
   f_path_table = true;
   return m_path_table;
@@ -270,6 +274,8 @@ iso9660_t::dir_entry_t::dir_entry_t(kaitai::kstream* p_io,
     m__io->pushName("body");
     m_body = new dir_entry_body_t(m__io__raw_body, this, m__root);
     m__io->popName();
+    m__io->addSubchunkItem(m__io->pos() - m__raw_body.size(), m__io->pos(),
+                           "body", m_body->veles_obj);
   }
   m__io->endChunk();
 }

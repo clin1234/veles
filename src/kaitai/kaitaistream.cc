@@ -295,6 +295,12 @@ std::string kaitai::kstream::bytes_to_string(const std::vector<uint8_t>& bytes,
   return res;
 }
 
+void kaitai::kstream::addSubchunkItem(uint64_t start, uint64_t end,
+                                      const char* name,
+                                      const veles::dbif::ObjectHandle& chunk) {
+  if (parser_ != nullptr) parser_->addSubchunkItem(start, end, name, chunk);
+}
+
 void kaitai::kstream::pushName(const char* name) {
   names_stack_.emplace_back(name);
   current_name_ = names_stack_.back().c_str();

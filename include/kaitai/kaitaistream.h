@@ -92,6 +92,8 @@ class kstream {
   /** additional methods required by Veles */
   void pushName(const char* name);
   void popName();
+  void addSubchunkItem(uint64_t start, uint64_t end, const char* name,
+                       const veles::dbif::ObjectHandle& chunk);
   const char* currentName() { return current_name_; }
   veles::dbif::ObjectHandle startChunk(const char* name);
   veles::dbif::ObjectHandle endChunk();

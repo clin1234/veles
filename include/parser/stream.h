@@ -66,6 +66,14 @@ class StreamParser {
     return chunk;
   }
 
+  void addSubchunkItem(uint64_t start, uint64_t end, const QString& name,
+                       const dbif::ObjectHandle& chunk) {
+    if (!stack_.empty()) {
+      stack_.back().items.push_back(
+          data::ChunkDataItem::subchunk(start, end, name, chunk));
+    }
+  }
+
   dbif::ObjectHandle endChunk() {
     auto& top = stack_.back();
     auto res = top.chunk;
