@@ -3,6 +3,11 @@
 
 #include "kaitai/iso9660.h"
 
+#include <set>
+
+// Tracks LBAs visited during one parse to break . / .. cycles.
+thread_local static std::set<uint32_t> s_visited_lbas;
+
 iso9660_t::iso9660_t(kaitai::kstream* p_io, kaitai::kstruct* p_parent,
                      iso9660_t* p_root)
     : kaitai::kstruct(p_io) {
@@ -15,6 +20,7 @@ iso9660_t::iso9660_t(kaitai::kstream* p_io, kaitai::kstruct* p_parent,
   veles_obj = m__io->startChunk("iso9660");
   f_sector_size = false;
   f_primary_vol_desc = false;
+  s_visited_lbas.clear();
   m__io->pushName("primary_vol_desc");
   primary_vol_desc();
   m__io->popName();
@@ -564,6 +570,20 @@ iso9660_t::dir_entry_body_t::dir_entry_body_t(
   m__io->pushName("rest");
   m_rest = m__io->read_bytes_full();
   m__io->popName();
+  if ((file_flags() & 2) != 0) {
+    uint32_t lba = lba_extent()->le();
+    if (lba != 0 && s_visited_lbas.insert(lba).second) {
+      extent_as_dir();
+      if (!n_extent_as_dir) {
+        uint64_t ext_start = static_cast<uint64_t>(lba) *
+                             static_cast<uint64_t>(_root()->sector_size());
+        uint64_t ext_end = ext_start +
+                           static_cast<uint64_t>(size_extent()->le());
+        m__io->addSubchunkItem(ext_start, ext_end, "extent_as_dir",
+                               m_extent_as_dir->veles_obj);
+      }
+    }
+  }
   m__io->endChunk();
 }
 
