@@ -52,8 +52,63 @@ We have some rules as to where to place new files:
 * There should be as few things in `util` folder as possible. `util` is only
   for pieces of code that don't belong to any existing folders and are too small
   to have their own folder
+* Place C++ source files generated from `kaitai-struct-compier` in `src\kaitai`,
+and C++ headers generated from `kaitai-struct-compier` in `include\kaitai`
 
-<br><br>
+### Special Kaitai Struct Instructions
+
+Right now, Veles relies on a
+[heavily-tweaked fork of the Kaitai Struct Compiler](https://github.com/codilime/kaitai_struct_compiler/tree/hacks/veles),
+which is based off of either 0.5 or 0.6 of the compiler.
+As such, this repo only contains .ksy files that either don't contain ks-version or has ks-version no newer than 0.6:
+https://github.com/clin1234/kaitai_struct_formats/tree/veles_compatible.
+You can download a build of this fork of the compiler here:
+https://github.com/clin1234/kaitai_struct_compiler/actions/workflows/main.yml?query=is%3Asuccess
+
+When adding a new format, source and header files generated from the compiler must be further modified:
+
+* Header (.h): declare `veles::dbif::ObjectHandle veles_obj` as a public member in each class and subclass
+* Source file (.cc): within each constructor, do the following:
+  - Surround each assignment of any member prefixed with `m_` (excluding `m__io`) with `m__io->pushName("<member name>");`
+  and `m__io->popName();`
+  - Include `veles_obj = m__io->startChunk("<class name>");` before any call to `new kaitai::kstream` and `m__io->endChunk();`
+  as the last function call within the constructor definition
+
+After massaging these files, create an `include\kaitai\<formatname>_parser.h` with the following format:
+```c++
+#include "kaitai/formatname.h"
+#include "parser/parser.h"
+
+namespace veles {
+namespace kaitai {
+
+class formatnameParser : public parser::Parser {
+ public:
+  formatnameParser() : parser::Parser("formatname (ksy)") {}
+  void parse(const dbif::ObjectHandle& blob, uint64_t start,
+             const dbif::ObjectHandle& parent_chunk) override {
+    try {
+      auto stream = kaitai::kstream(blob, start, parent_chunk);
+      auto parser = formatname_t(&stream);
+    } catch (const std::exception&) {
+    }
+  }
+};
+
+}  // namespace kaitai
+}  // namespace veles
+``` 
+
+And construct the parser in `createAllParsers()` at `src\parser\utils.cc`:
+```c++
+QList<Parser*> createAllParsers() {
+  QList<Parser*> res;
+  ...
+  res.append(new kaitai::formatnameParser());
+  return res;
+}
+```
+
 Thanks for taking the time to contribute to Veles!
 
 [Google C++ Style Guide]: <https://google.github.io/styleguide/cppguide.html>
