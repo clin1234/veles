@@ -26,14 +26,24 @@ java_class_t::java_class_t(kaitai::kstream* p_io, kaitai::kstruct* p_parent,
   m__io->pushName("constant_pool_count");
   m_constant_pool_count = m__io->read_u2be();
   m__io->popName();
-  int l_constant_pool = constant_pool_count() - 1;
+  // LONG and DOUBLE each occupy two constant pool slots (JVM spec §4.4.5).
+  // Track by slot index so we insert a nullptr placeholder for the phantom slot.
+  int target_slots = constant_pool_count() - 1;
   m_constant_pool = new std::vector<constant_pool_entry_t*>();
-  m_constant_pool->reserve(l_constant_pool);
-  for (int i = 0; i < l_constant_pool; i++) {
+  m_constant_pool->reserve(target_slots);
+  for (int slot = 0; slot < target_slots; ) {
     m__io->pushName("constant_pool");
-    m_constant_pool->push_back(
-        new constant_pool_entry_t(m__io, this, m__root));
+    auto entry = new constant_pool_entry_t(m__io, this, m__root);
+    m_constant_pool->push_back(entry);
     m__io->popName();
+    bool is_wide = (entry->tag() == constant_pool_entry_t::TAG_ENUM_LONG ||
+                    entry->tag() == constant_pool_entry_t::TAG_ENUM_DOUBLE);
+    if (is_wide && slot + 1 < target_slots) {
+      m_constant_pool->push_back(nullptr);
+      slot += 2;
+    } else {
+      slot += 1;
+    }
   }
   m__io->pushName("access_flags");
   m_access_flags = m__io->read_u2be();
@@ -82,7 +92,7 @@ java_class_t::java_class_t(kaitai::kstream* p_io, kaitai::kstruct* p_parent,
 
 java_class_t::~java_class_t() {
   for (auto it = m_constant_pool->begin(); it != m_constant_pool->end(); ++it)
-    delete *it;
+    if (*it) delete *it;
   delete m_constant_pool;
   delete m_interfaces;
   for (auto it = m_fields->begin(); it != m_fields->end(); ++it)
@@ -332,6 +342,44 @@ java_class_t::constant_pool_entry_t::constant_pool_entry_t(
     m__io->pushName("interface_method_ref_cp_info");
     m_interface_method_ref_cp_info =
         new interface_method_ref_cp_info_t(m__io, this, m__root);
+    m__io->popName();
+  }
+  // Consume bytes for tag types that have no dedicated sub-object.
+  // Without this, the stream stays misaligned and all subsequent reads
+  // produce garbage, eventually exhausting the stream and crashing on
+  // getBe16()[0] (vector subscript out of range).
+  if (tag() == TAG_ENUM_STRING) {          // u2 string_index
+    m__io->pushName("string_index");
+    m__io->read_u2be();
+    m__io->popName();
+  } else if (tag() == TAG_ENUM_INTEGER || tag() == TAG_ENUM_FLOAT) {  // u4
+    m__io->pushName("bytes");
+    m__io->read_u4be();
+    m__io->popName();
+  } else if (tag() == TAG_ENUM_LONG || tag() == TAG_ENUM_DOUBLE) {    // u8
+    m__io->pushName("high_bytes");
+    m__io->read_u4be();
+    m__io->popName();
+    m__io->pushName("low_bytes");
+    m__io->read_u4be();
+    m__io->popName();
+  } else if (tag() == TAG_ENUM_METHOD_HANDLE) {  // u1 ref_kind + u2 ref_index
+    m__io->pushName("reference_kind");
+    m__io->read_u1();
+    m__io->popName();
+    m__io->pushName("reference_index");
+    m__io->read_u2be();
+    m__io->popName();
+  } else if (tag() == TAG_ENUM_METHOD_TYPE) {    // u2 descriptor_index
+    m__io->pushName("descriptor_index");
+    m__io->read_u2be();
+    m__io->popName();
+  } else if (tag() == TAG_ENUM_INVOKE_DYNAMIC) { // u2 + u2
+    m__io->pushName("bootstrap_method_attr_index");
+    m__io->read_u2be();
+    m__io->popName();
+    m__io->pushName("name_and_type_index");
+    m__io->read_u2be();
     m__io->popName();
   }
   m__io->endChunk();
