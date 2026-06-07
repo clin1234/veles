@@ -191,6 +191,8 @@ class NCWrapper : public QObject {
   void parse(const dbif::ObjectHandle& blob, db::MethodRunner* runner,
              const QString& parser_id, quint64 start = 0,
              const dbif::ObjectHandle& parent_chunk = dbif::ObjectHandle());
+  void parsingStarted(const QString& parser_id);
+  void parsingFinished();
 
  private:
   dbif::InfoPromise* addInfoPromise(uint64_t qid, bool sub);

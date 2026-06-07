@@ -1153,6 +1153,18 @@ dbif::MethodResultPromise* NCWrapper::handleBlobParseRequest(
   QObject::connect(runner, &db::MethodRunner::gotError, promise,
                    &dbif::MethodResultPromise::gotError);
 
+  // Emit parsingStarted synchronously on the main thread before dispatching to
+  // the worker.  Because the parse signal is a queued cross-thread connection,
+  // emit parse(...) returns immediately, giving the event loop a chance to
+  // repaint the status bar before the worker begins.
+  emit parsingStarted(blob_parse_request->parser_id);
+
+  // parsingFinished fires on the main thread once the worker thread delivers
+  // its result/error back via the queued gotResult/gotError connections.
+  auto finish = [this]() { emit parsingFinished(); };
+  QObject::connect(runner, &db::MethodRunner::gotResult, this, finish);
+  QObject::connect(runner, &db::MethodRunner::gotError, this, finish);
+
   emit parse(QSharedPointer<NCObjectHandle>::create(
                  this, id, dbif::ObjectType::FILE_BLOB),
              runner, blob_parse_request->parser_id, blob_parse_request->start,

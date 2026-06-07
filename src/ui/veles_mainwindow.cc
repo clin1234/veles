@@ -315,6 +315,12 @@ void VelesMainWindow::createDb() {
     auto nc = new client::NCWrapper(connection_manager_->networkClient(), this);
     database_ = QSharedPointer<client::NCObjectHandle>::create(
         nc, *data::NodeID::getRootNodeId(), dbif::ObjectType::ROOT);
+    connect(nc, &client::NCWrapper::parsingStarted,
+            [this](const QString& id) {
+              statusBar()->showMessage(tr("Parsing %1…").arg(id));
+            });
+    connect(nc, &client::NCWrapper::parsingFinished,
+            [this]() { statusBar()->clearMessage(); });
   }
   auto database_info = new DatabaseInfo(database_);
   auto* dock_widget = wrapWithDock(database_info, "Database");
