@@ -169,18 +169,20 @@ pcap_t::packet_t::packet_t(kaitai::kstream *p_io, pcap_t *p_parent, pcap_t *p_ro
         m__io->pushName("_skip_me_ppi_body");
         m__raw_ppi_body = m__io->read_bytes(incl_len());
         m__io->popName();
-        m__io__raw_ppi_body = new kaitai::kstream(m__io->blob(), ppi_start, veles_obj, incl_len());
+        m__io__raw_ppi_body = new kaitai::kstream(m__io->blob(), ppi_start, veles_obj, ppi_start + incl_len());
         m_ppi_body = new packet_ppi_t(m__io__raw_ppi_body, this, m__root);
         m__io->addSubchunkItem(ppi_start, ppi_start + incl_len(), "ppi_body", m_ppi_body->veles_obj);
     }
     n_ethernet_body = true;
     if (_root()->hdr()->network() == LINKTYPE_ETHERNET) {
         n_ethernet_body = false;
-        m__io->pushName("body");
+        uint64_t eth_start = m__io->pos();
+        m__io->pushName("_skip_me_ethernet_body");
         m__raw_ethernet_body = m__io->read_bytes(incl_len());
         m__io->popName();
-        m__io__raw_ethernet_body = new kaitai::kstream(m__raw_ethernet_body);
+        m__io__raw_ethernet_body = new kaitai::kstream(m__io->blob(), eth_start, veles_obj, eth_start + incl_len());
         m_ethernet_body = new ethernet_frame_t(m__io__raw_ethernet_body);
+        m__io->addSubchunkItem(eth_start, eth_start + incl_len(), "ethernet_body", m_ethernet_body->veles_obj);
     }
     m__io->endChunk();
 }

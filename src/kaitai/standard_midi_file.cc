@@ -278,7 +278,7 @@ standard_midi_file_t::track_t::track_t(kaitai::kstream* p_io,
   uint64_t events_start = m__io->pos();
   m__raw_events = m__io->read_bytes(track_length());
   m__io__raw_events = new kaitai::kstream(
-      m__io->blob(), events_start, veles_obj, track_length());
+      m__io->blob(), events_start, veles_obj, events_start + track_length());
   m_events = new track_events_t(m__io__raw_events, this, m__root);
   m__io->addSubchunkItem(events_start, events_start + track_length(),
                          "events", m_events->veles_obj);
