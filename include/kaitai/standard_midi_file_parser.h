@@ -12,7 +12,7 @@ class StandardMidiFileParser : public parser::Parser {
   void parse(const dbif::ObjectHandle& blob, uint64_t start,
              const dbif::ObjectHandle& parent_chunk) override {
     try {
-      auto stream = kaitai::kstream(blob, start, parent_chunk, 0, false, true);
+      auto stream = kaitai::kstream(blob, start, parent_chunk);
       auto parser = standard_midi_file_t(&stream);
     } catch (const std::exception&) {
     }
