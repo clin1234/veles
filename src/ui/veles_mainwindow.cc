@@ -22,6 +22,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QStatusBar>
 #include <QUrl>
 
 #include "client/dbif.h"
