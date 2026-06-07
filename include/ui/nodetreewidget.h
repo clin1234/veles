@@ -44,6 +44,7 @@ class NodeTreeWidget : public IconAwareView {
       const QSharedPointer<FileBlobModel>& data_model,
       const QSharedPointer<QItemSelectionModel>& selection_model);
   void setParserIds(const QStringList& ids);
+  void setModelFrozen(bool frozen);
 
  private slots:
   void updateLineEditWithAddress(qint64 address);

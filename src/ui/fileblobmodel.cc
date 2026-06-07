@@ -103,6 +103,7 @@ FileBlobModel::FileBlobModel(const dbif::ObjectHandle& fileBlob,
 
   connect(item_, &FileBlobItem::removingChildren,
           [this](FileBlobItem* item, bool isBefore) {
+            if (frozen_) return;
             if (isBefore) {
               beginRemoveRows(indexFromItem(item), 0, item->childrenCount() - 1);
             } else {
@@ -113,6 +114,7 @@ FileBlobModel::FileBlobModel(const dbif::ObjectHandle& fileBlob,
 
   connect(item_, &FileBlobItem::insertingChildren,
           [this](FileBlobItem* item, bool isBefore, int count) {
+            if (frozen_) return;
             if (isBefore) {
               beginInsertRows(indexFromItem(item), 0, count - 1);
             } else {
@@ -320,6 +322,14 @@ bool FileBlobModel::setData(const QModelIndex& index, const QVariant& value,
   }
 
   return false;
+}
+
+void FileBlobModel::setFrozen(bool frozen) {
+  frozen_ = frozen;
+  if (!frozen) {
+    beginResetModel();
+    endResetModel();
+  }
 }
 
 bool FileBlobModel::removeRows(int row, int count, const QModelIndex& parent) {

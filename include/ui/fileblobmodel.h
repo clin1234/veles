@@ -66,6 +66,7 @@ class FileBlobModel : public QAbstractItemModel {
 
   dbif::ObjectHandle blob(const QModelIndex& index = QModelIndex());
   QStringList path() { return path_; }
+  void setFrozen(bool frozen);
 
   static const Qt::ItemDataRole ROLE_BEGIN = Qt::UserRole;
   static const Qt::ItemDataRole ROLE_END =
@@ -87,6 +88,7 @@ class FileBlobModel : public QAbstractItemModel {
   QStringList path_;
 
   data::BinData binData_;
+  bool frozen_ = false;
 
   QColor color(int colorIndex) const;
   FileBlobItem* itemFromIndex(const QModelIndex& index) const;

@@ -191,7 +191,7 @@ class NCWrapper : public QObject {
   void parse(const dbif::ObjectHandle& blob, db::MethodRunner* runner,
              const QString& parser_id, quint64 start = 0,
              const dbif::ObjectHandle& parent_chunk = dbif::ObjectHandle());
-  void parsingStarted(const QString& parser_id);
+  void parsingStarted(const QString& parser_id, bool deferred);
   void parsingFinished();
 
  private:
@@ -200,6 +200,7 @@ class NCWrapper : public QObject {
   void wrongMessageType(const QString& name, const QString& expected_type);
 
   NetworkClient* nc_;
+  QSet<QString> deferred_parser_ids_;
 
   std::unordered_map<std::string, MessageHandler> message_handlers_;
   std::unordered_map<uint64_t, QPointer<dbif::InfoPromise>> promises_;

@@ -39,6 +39,7 @@ class Parser {
                       const dbif::ObjectHandle& parent_chunk);
   virtual void parse(const dbif::ObjectHandle& blob, uint64_t start,
                      const dbif::ObjectHandle& parent_chunk) = 0;
+  virtual bool isDeferred() const { return false; }
 
  private:
   QString _id;

@@ -110,6 +110,9 @@ NCWrapper::NCWrapper(NetworkClient* network_client, QObject* parent)
                      &NCWrapper::replyForParsersListRequest,
                      Qt::QueuedConnection);
     for (auto parser : parser::createAllParsers()) {
+      if (parser->isDeferred()) {
+        deferred_parser_ids_.insert(parser->id());
+      }
       parser_worker->registerParser(parser);
     }
   }
@@ -1157,7 +1160,8 @@ dbif::MethodResultPromise* NCWrapper::handleBlobParseRequest(
   // the worker.  Because the parse signal is a queued cross-thread connection,
   // emit parse(...) returns immediately, giving the event loop a chance to
   // repaint the status bar before the worker begins.
-  emit parsingStarted(blob_parse_request->parser_id);
+  bool deferred = deferred_parser_ids_.contains(blob_parse_request->parser_id);
+  emit parsingStarted(blob_parse_request->parser_id, deferred);
 
   // parsingFinished fires on the main thread once the worker thread delivers
   // its result/error back via the queued gotResult/gotError connections.

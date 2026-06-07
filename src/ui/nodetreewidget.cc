@@ -93,6 +93,10 @@ void NodeTreeWidget::setParserIds(const QStringList& ids) {
   // initParsersMenu();
 }
 
+void NodeTreeWidget::setModelFrozen(bool frozen) {
+  data_model_->setFrozen(frozen);
+}
+
 /*****************************************************************************/
 /* Private UI methods */
 /*****************************************************************************/

@@ -9,6 +9,7 @@ namespace kaitai {
 class StlParser : public parser::Parser {
  public:
   StlParser() : parser::Parser("stl (ksy)") {}
+  bool isDeferred() const override { return true; }
   void parse(const dbif::ObjectHandle& blob, uint64_t start,
              const dbif::ObjectHandle& parent_chunk) override {
     try {

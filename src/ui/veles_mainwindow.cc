@@ -316,11 +316,20 @@ void VelesMainWindow::createDb() {
     database_ = QSharedPointer<client::NCObjectHandle>::create(
         nc, *data::NodeID::getRootNodeId(), dbif::ObjectType::ROOT);
     connect(nc, &client::NCWrapper::parsingStarted,
-            [this](const QString& id) {
+            [this](const QString& id, bool deferred) {
               statusBar()->showMessage(tr("Parsing %1…").arg(id));
+              if (deferred) {
+                for (auto* w : findChildren<NodeTreeWidget*>()) {
+                  w->setModelFrozen(true);
+                }
+              }
             });
-    connect(nc, &client::NCWrapper::parsingFinished,
-            [this]() { statusBar()->clearMessage(); });
+    connect(nc, &client::NCWrapper::parsingFinished, [this]() {
+      statusBar()->clearMessage();
+      for (auto* w : findChildren<NodeTreeWidget*>()) {
+        w->setModelFrozen(false);
+      }
+    });
   }
   auto database_info = new DatabaseInfo(database_);
   auto* dock_widget = wrapWithDock(database_info, "Database");
