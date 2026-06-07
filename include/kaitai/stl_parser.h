@@ -12,7 +12,9 @@ class StlParser : public parser::Parser {
   void parse(const dbif::ObjectHandle& blob, uint64_t start,
              const dbif::ObjectHandle& parent_chunk) override {
     try {
-      auto stream = kaitai::kstream(blob, start, parent_chunk);
+      auto stream = kaitai::kstream(blob, start, parent_chunk,
+                                    /*max_size=*/0, /*error=*/false,
+                                    /*deferred=*/true);
       auto parser = stl_t(&stream);
     } catch (const std::exception&) {
     }

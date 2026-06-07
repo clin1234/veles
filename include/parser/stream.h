@@ -17,6 +17,7 @@
 #pragma once
 
 #include <cassert>
+#include <memory>
 
 #include "data/repack.h"
 #include "dbif/info.h"
@@ -43,47 +44,150 @@ class StreamParser {
   unsigned width_;
   size_t blob_size_;
 
+  // === Deferred mode ===
+  // When deferred_ is true, startChunk/endChunk accumulate the entire chunk
+  // tree in memory.  The DB writes happen only once, at the outermost
+  // endChunk, so the UI sees no intermediate state and the Node Tree does
+  // not flicker.
+
+  struct PendingChunk;
+
+  // An item that belongs to a PendingChunk's item list.  It is either an
+  // already-resolved ChunkDataItem (fields and pre-created sub-stream chunks)
+  // or a still-pending deferred child chunk.
+  struct PendingItem {
+    bool is_pending_child;
+    data::ChunkDataItem item;                    // valid when !is_pending_child
+    std::unique_ptr<PendingChunk> pending_child; // valid when  is_pending_child
+
+    explicit PendingItem(data::ChunkDataItem i)
+        : is_pending_child(false), item(std::move(i)) {}
+    explicit PendingItem(std::unique_ptr<PendingChunk> c)
+        : is_pending_child(true), pending_child(std::move(c)) {}
+    PendingItem(PendingItem&&) = default;
+    PendingItem& operator=(PendingItem&&) = default;
+    PendingItem(const PendingItem&) = delete;
+    PendingItem& operator=(const PendingItem&) = delete;
+  };
+
+  struct PendingChunk {
+    uint64_t start = 0;
+    uint64_t end = 0;
+    QString type;
+    QString name;
+    std::vector<PendingItem> items;
+    dbif::ObjectHandle chunk;  // null until flushed
+  };
+
+  bool deferred_;
+  std::vector<std::unique_ptr<PendingChunk>> deferred_stack_;
+
+  // Recursively create DB objects for pc and all its descendant PendingChunks,
+  // then set parse data for each chunk.  Called only at the outermost endChunk.
+  void flushDeferred(PendingChunk& pc, const dbif::ObjectHandle& parent) {
+    pc.chunk = blob_->syncRunMethod<dbif::ChunkCreateRequest>(
+                          pc.name, pc.type, parent, pc.start, pc.end)
+                   ->object;
+
+    // Children need pc.chunk as their parent, so recurse before building items.
+    for (auto& pi : pc.items) {
+      if (pi.is_pending_child) {
+        flushDeferred(*pi.pending_child, pc.chunk);
+      }
+    }
+
+    // Build the final item list in original parse order.
+    std::vector<data::ChunkDataItem> final_items;
+    for (auto& pi : pc.items) {
+      if (!pi.is_pending_child) {
+        final_items.push_back(pi.item);
+      } else {
+        auto& child = *pi.pending_child;
+        final_items.push_back(data::ChunkDataItem::subchunk(
+            child.start, child.end, child.name, child.chunk));
+      }
+    }
+
+    pc.chunk->syncRunMethod<dbif::SetChunkParseRequest>(
+        pc.start, pc.end, final_items);
+  }
+
+  // Add a resolved item to whichever top-of-stack is active.
+  void addItemToTop(data::ChunkDataItem item) {
+    if (!deferred_) {
+      stack_.back().items.push_back(std::move(item));
+    } else {
+      deferred_stack_.back()->items.emplace_back(std::move(item));
+    }
+  }
+
  public:
   StreamParser(dbif::ObjectHandle blob, uint64_t start,
-               dbif::ObjectHandle parent_chunk = dbif::ObjectHandle())
-      : blob_(blob), parent_chunk_(parent_chunk), pos_(start) {
+               dbif::ObjectHandle parent_chunk = dbif::ObjectHandle(),
+               bool deferred = false)
+      : blob_(blob), parent_chunk_(parent_chunk), pos_(start),
+        deferred_(deferred) {
     auto desc = blob_->syncGetInfo<dbif::DescriptionRequest>();
     width_ = desc.dynamicCast<dbif::BlobDescriptionReply>()->width;
     blob_size_ = desc.dynamicCast<dbif::BlobDescriptionReply>()->size;
   }
 
   dbif::ObjectHandle startChunk(const QString& type, const QString& name) {
-    dbif::ObjectHandle parent = parent_chunk_;
-    if (!stack_.empty()) {
-      parent = stack_.back().chunk;
+    if (!deferred_) {
+      dbif::ObjectHandle parent = parent_chunk_;
+      if (!stack_.empty()) {
+        parent = stack_.back().chunk;
+      }
+      dbif::ObjectHandle chunk = blob_
+                                     ->syncRunMethod<dbif::ChunkCreateRequest>(
+                                         name, type, parent, pos_, pos_)
+                                     ->object;
+      stack_.push_back(
+          WorkChunk{chunk, pos_, type, name, std::vector<data::ChunkDataItem>()});
+      return chunk;
+    } else {
+      deferred_stack_.push_back(std::make_unique<PendingChunk>());
+      auto& top = *deferred_stack_.back();
+      top.start = pos_;
+      top.type = type;
+      top.name = name;
+      return {};  // null handle — stored in veles_obj but not read during parse
     }
-    dbif::ObjectHandle chunk = blob_
-                                   ->syncRunMethod<dbif::ChunkCreateRequest>(
-                                       name, type, parent, pos_, pos_)
-                                   ->object;
-    stack_.push_back(
-        WorkChunk{chunk, pos_, type, name, std::vector<data::ChunkDataItem>()});
-    return chunk;
   }
 
   void addSubchunkItem(uint64_t start, uint64_t end, const QString& name,
                        const dbif::ObjectHandle& chunk) {
-    if (!stack_.empty()) {
-      stack_.back().items.push_back(
-          data::ChunkDataItem::subchunk(start, end, name, chunk));
-    }
+    // chunk already exists in the DB (created by a sub-stream's own parser).
+    addItemToTop(data::ChunkDataItem::subchunk(start, end, name, chunk));
   }
 
   dbif::ObjectHandle endChunk() {
-    auto& top = stack_.back();
-    auto res = top.chunk;
-    res->syncRunMethod<dbif::SetChunkParseRequest>(top.start, pos_, top.items);
-    if (stack_.size() > 1) {
-      stack_[stack_.size() - 2].items.push_back(
-          data::ChunkDataItem::subchunk(top.start, pos_, top.name, top.chunk));
+    if (!deferred_) {
+      auto& top = stack_.back();
+      auto res = top.chunk;
+      res->syncRunMethod<dbif::SetChunkParseRequest>(top.start, pos_, top.items);
+      if (stack_.size() > 1) {
+        stack_[stack_.size() - 2].items.push_back(
+            data::ChunkDataItem::subchunk(top.start, pos_, top.name, top.chunk));
+      }
+      stack_.pop_back();
+      return res;
+    } else {
+      auto& top = *deferred_stack_.back();
+      top.end = pos_;
+      auto done = std::move(deferred_stack_.back());
+      deferred_stack_.pop_back();
+
+      if (deferred_stack_.empty()) {
+        // Outermost chunk: flush the entire accumulated tree in one pass.
+        flushDeferred(*done, parent_chunk_);
+        return done->chunk;
+      } else {
+        // Move this finished chunk into the parent's item list.
+        deferred_stack_.back()->items.emplace_back(std::move(done));
+        return {};
+      }
     }
-    stack_.pop_back();
-    return res;
   }
 
   data::BinData getData(const QString& name, const data::Repacker& repack,
@@ -97,7 +201,7 @@ class StreamParser {
         blob_->syncGetInfo<veles::dbif::BlobDataRequest>(pos_, pos_ + src_sz);
     pos_ += src_sz;
     data::BinData res = repack.repack(data->data, 0, num_elements);
-    stack_.back().items.push_back(data::ChunkDataItem::field(
+    addItemToTop(data::ChunkDataItem::field(
         pos_ - src_sz, pos_, name, repack, num_elements, high_type, res));
     return res;
   }
@@ -141,7 +245,7 @@ class StreamParser {
     }
 
     pos_ += bytes_read;
-    stack_.back().items.push_back(data::ChunkDataItem::field(
+    addItemToTop(data::ChunkDataItem::field(
         pos_ - bytes_read, pos_, name, repack, res.size(), high_type, res));
     return res;
   }
@@ -300,7 +404,7 @@ class StreamParser {
 
   void skip(uint64_t bytes) { pos_ += bytes; }
 
-  void seek(uint64_t pos) { pos_ = pos;}
+  void seek(uint64_t pos) { pos_ = pos; }
 
   void setComment(const QString& comment) {
     auto& top = stack_.back();

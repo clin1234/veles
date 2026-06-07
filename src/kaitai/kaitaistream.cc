@@ -24,10 +24,11 @@ namespace kaitai {
 
 kaitai::kstream::kstream(const veles::dbif::ObjectHandle& blob, uint64_t start,
                          const veles::dbif::ObjectHandle& parent_chunk,
-                         uint64_t max_size, bool error)
+                         uint64_t max_size, bool error, bool deferred)
     : obj_(blob), current_name_(nullptr), error_(error), max_size_(max_size),
       data_pos_(0) {
-  parser_ = new veles::parser::StreamParser(blob, start, parent_chunk);
+  parser_ = new veles::parser::StreamParser(blob, start, parent_chunk,
+                                            deferred);
 }
 
 kaitai::kstream::kstream(const std::string& data)

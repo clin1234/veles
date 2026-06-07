@@ -40,7 +40,8 @@ class kstream {
   explicit kstream(const veles::dbif::ObjectHandle& blob, uint64_t start = 0,
                    const veles::dbif::ObjectHandle& parent_chunk =
                        veles::dbif::ObjectHandle(),
-                   uint64_t max_size = 0, bool error = false);
+                   uint64_t max_size = 0, bool error = false,
+                   bool deferred = false);
   explicit kstream(const std::string& data);
   ~kstream();
 
