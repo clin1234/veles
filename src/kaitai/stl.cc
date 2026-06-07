@@ -19,15 +19,14 @@ stl_t::stl_t(kaitai::kstream* p_io, kaitai::kstruct* p_parent,
   m__io->pushName("num_triangles");
   m_num_triangles = m__io->read_u4le();
   m__io->popName();
-  // Read all triangle data as a single raw field rather than N individual
-  // sub-chunks. Each binary STL triangle is exactly 50 bytes (3D normal +
-  // 3×3D vertex + 2-byte attribute count). Creating a sub-chunk per triangle
-  // causes O(N) database writes that make the Node Tree flicker on every
-  // push for large meshes. A single bytes read produces one field item.
+  int l_triangles = num_triangles();
   m_triangles = new std::vector<triangle_t*>();
-  m__io->pushName("triangles");
-  m__io->read_bytes(num_triangles() * 50);
-  m__io->popName();
+  m_triangles->reserve(l_triangles);
+  for (int i = 0; i < l_triangles; i++) {
+    m__io->pushName("triangles");
+    m_triangles->push_back(new triangle_t(m__io, this, m__root));
+    m__io->popName();
+  }
   m__io->endChunk();
 }
 
