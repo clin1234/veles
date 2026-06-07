@@ -26,6 +26,7 @@
 #include "kaitai/microsoft_pe_parser.h"
 #include "kaitai/png_parser.h"
 #include "kaitai/quicktime_mov_parser.h"
+#include "kaitai/regf_parser.h"
 #include "kaitai/zip_parser.h"
 #include "parser/unpng.h"
 #include "parser/unpyc.h"
@@ -78,6 +79,7 @@ QList<Parser*> createAllParsers() {
   res.append(new kaitai::Quicktime_movParser());
   res.append(new kaitai::ISO9660Parser());
   res.append(new kaitai::JpegParser());
+  res.append(new kaitai::RegfParser());
   return res;
 }
 
