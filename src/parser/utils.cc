@@ -22,6 +22,7 @@
 #include "kaitai/elf_parser.h"
 #include "kaitai/gif_parser.h"
 #include "kaitai/iso9660_parser.h"
+#include "kaitai/java_class_parser.h"
 #include "kaitai/jpeg_parser.h"
 #include "kaitai/microsoft_pe_parser.h"
 #include "kaitai/png_parser.h"
@@ -80,6 +81,7 @@ QList<Parser*> createAllParsers() {
   res.append(new kaitai::ISO9660Parser());
   res.append(new kaitai::JpegParser());
   res.append(new kaitai::RegfParser());
+  res.append(new kaitai::JavaClassParser());
   return res;
 }
 
