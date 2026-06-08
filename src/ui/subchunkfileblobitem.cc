@@ -24,7 +24,7 @@ namespace ui {
 
 namespace {
 
-FileBlobItem* makeChildItem(const data::ChunkDataItem& item, QObject* parent) {
+FileBlobItem* makeChildItem(data::ChunkDataItem& item, QObject* parent) {
   using T = data::ChunkDataItem;
   if (item.type == T::SUBCHUNK) {
     return new SubchunkFileBlobItem(item.ref[0], parent);
@@ -93,7 +93,7 @@ void SubchunkFileBlobItem::gotChunkDataResponse(
   FileBlobItem::removeOldChildren();
   QList<FileBlobItem*> newChildren;
   newChildren.reserve(items.size());
-  for (const auto& item : items) {
+  for (auto& item : items) {
     newChildren.append(makeChildItem(item, this));
   }
   addChildren(newChildren);
