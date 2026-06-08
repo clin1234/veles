@@ -379,6 +379,7 @@ if(GTEST_FOUND AND GMOCK_FOUND)
       ${TEST_DIR}/util/sampling/uniform_sampler.cc
       ${TEST_DIR}/util/int_bytes.cc
       ${TEST_DIR}/util/edit.cc
+      ${TEST_DIR}/parser/stream_parser.cc
   )
 
   target_link_libraries(run_test veles_base ${GTEST_LIBRARIES} ${GMOCK_LIBRARIES})
