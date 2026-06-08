@@ -28,6 +28,7 @@
 #include "kaitai/png_parser.h"
 #include "kaitai/quicktime_mov_parser.h"
 #include "kaitai/regf_parser.h"
+#include "kaitai/bson_parser.h"
 #include "kaitai/pcap_parser.h"
 #include "kaitai/standard_midi_file_parser.h"
 #include "kaitai/stl_parser.h"
@@ -85,6 +86,7 @@ QList<Parser*> createAllParsers() {
   res.append(new kaitai::JpegParser());
   res.append(new kaitai::RegfParser());
   res.append(new kaitai::JavaClassParser());
+  res.append(new kaitai::BsonParser());
   res.append(new kaitai::PcapParser());
   res.append(new kaitai::StandardMidiFileParser());
   res.append(new kaitai::StlParser());
