@@ -354,7 +354,7 @@ target_link_libraries(veles_base Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network)
 add_dependencies(veles_base msgpack-c)
 
 target_link_libraries(main_exe veles_base Qt5::Widgets ${ZLIB_LIBRARIES} ${ADDITIONAL_LINK_LIBRARIES})
-set_target_properties(main_exe PROPERTIES OUTPUT_NAME "veles")
+set_target_properties(main_exe PROPERTIES OUTPUT_NAME "veles-ng")
 add_dependencies(main_exe openssl zlib msgpack-c)
 
 if(GTEST_FOUND AND GMOCK_FOUND)
@@ -382,7 +382,7 @@ if(GTEST_FOUND AND GMOCK_FOUND)
       ${TEST_DIR}/parser/stream_parser.cc
   )
 
-  target_link_libraries(run_test veles_base ${GTEST_LIBRARIES} ${GMOCK_LIBRARIES})
+  target_link_libraries(run_test veles_base ${GTEST_LIBRARIES} ${GMOCK_LIBRARIES} Qt5::Core ${ZLIB_LIBRARIES})
 
   add_custom_command(TARGET run_test
       COMMENT "Running tests"
