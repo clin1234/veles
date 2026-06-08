@@ -102,10 +102,10 @@ FileBlobModel::FileBlobModel(const dbif::ObjectHandle& fileBlob,
   item_ = new RootFileBlobItem(fileBlob, this);
 
   connect(item_, &FileBlobItem::removingChildren,
-          [this](FileBlobItem* item, bool isBefore) {
+          [this](FileBlobItem* item, bool isBefore, int first, int last) {
             if (frozen_) return;
             if (isBefore) {
-              beginRemoveRows(indexFromItem(item), 0, item->childrenCount() - 1);
+              beginRemoveRows(indexFromItem(item), first, last);
             } else {
               endRemoveRows();
               emitDataChanged(item);
@@ -113,10 +113,10 @@ FileBlobModel::FileBlobModel(const dbif::ObjectHandle& fileBlob,
           });
 
   connect(item_, &FileBlobItem::insertingChildren,
-          [this](FileBlobItem* item, bool isBefore, int count) {
+          [this](FileBlobItem* item, bool isBefore, int first, int last) {
             if (frozen_) return;
             if (isBefore) {
-              beginInsertRows(indexFromItem(item), 0, count - 1);
+              beginInsertRows(indexFromItem(item), first, last);
             } else {
               endInsertRows();
               emitDataChanged(item);

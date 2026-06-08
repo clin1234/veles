@@ -35,15 +35,28 @@ RootFileBlobItem::RootFileBlobItem(const dbif::ObjectHandle& obj,
 
 void RootFileBlobItem::gotChildrenResponse(
     const veles::dbif::PInfoReply& reply) {
-  FileBlobItem::removeOldChildren();
   auto objects = reply.dynamicCast<dbif::ChildrenRequest::ReplyType>()->objects;
 
-  QList<FileBlobItem*> newChildren;
+  bool appendOnly = (children_.size() <= static_cast<int>(objects.size()));
+  for (int i = 0; i < children_.size() && appendOnly; ++i) {
+    if (children_[i]->objectHandle() != objects[i]) appendOnly = false;
+  }
 
+  if (appendOnly) {
+    QList<FileBlobItem*> newItems;
+    for (int i = children_.size(); i < static_cast<int>(objects.size()); ++i) {
+      newItems.append(new SubchunkFileBlobItem(objects[i], this));
+    }
+    if (!newItems.empty()) addChildren(newItems);
+    return;
+  }
+
+  FileBlobItem::removeOldChildren();
+  QList<FileBlobItem*> newChildren;
+  newChildren.reserve(objects.size());
   for (auto& object : objects) {
     newChildren.append(new SubchunkFileBlobItem(object, this));
   }
-
   addChildren(newChildren);
 }
 

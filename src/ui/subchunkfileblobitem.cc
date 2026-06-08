@@ -22,6 +22,46 @@
 namespace veles {
 namespace ui {
 
+namespace {
+
+FileBlobItem* makeChildItem(const data::ChunkDataItem& item, QObject* parent) {
+  using T = data::ChunkDataItem;
+  if (item.type == T::SUBCHUNK) {
+    return new SubchunkFileBlobItem(item.ref[0], parent);
+  }
+  if (item.type == T::FIELD) {
+    QString comment;
+    if (item.num_elements > 1) {
+      comment += QString::number(item.num_elements) + " x ";
+    }
+    comment += QString::number(item.repack.to_width) + "b (";
+    comment +=
+        (item.repack.endian == veles::data::Endian::LITTLE) ? "LE" : "BE";
+    comment += ")";
+    return new FileBlobItem(item.name, item.raw_value.toString(16), comment,
+                            item.start, item.end, parent);
+  }
+  if (item.type == T::SUBBLOB) {
+    auto* child = new SimpleFileBlobItem(item.name, "open in new tab", parent);
+    child->setIcon(QIcon::fromTheme(":/images/newTab.png"));
+    child->setNewRoot(item.ref[0]);
+    return child;
+  }
+  auto* child = new SimpleFileBlobItem(item.name, "unsupported", parent);
+  child->setIcon(QIcon::fromTheme(":/images/error.ico"));
+  return child;
+}
+
+bool childMatchesItem(FileBlobItem* child, const data::ChunkDataItem& item) {
+  using T = data::ChunkDataItem;
+  if (item.type == T::SUBCHUNK) return child->objectHandle() == item.ref[0];
+  if (item.type == T::SUBBLOB) return child->newRoot() == item.ref[0];
+  uint64_t s, e;
+  return child->range(&s, &e) && s == item.start;
+}
+
+}  // namespace
+
 int SubchunkFileBlobItem::childrenCount() {
   subscribeInfo();
   return FileBlobItem::childrenCount();
@@ -29,42 +69,33 @@ int SubchunkFileBlobItem::childrenCount() {
 
 void SubchunkFileBlobItem::gotChunkDataResponse(
     const veles::dbif::PInfoReply& reply) {
-  FileBlobItem::removeOldChildren();
-
   auto items = reply.dynamicCast<dbif::ChunkDataRequest::ReplyType>()->items;
 
-  QList<FileBlobItem*> newChildren;
-
-  for (auto& item : items) {
-    if (item.type == data::ChunkDataItem::ChunkDataItemType::SUBCHUNK) {
-      newChildren.append(new SubchunkFileBlobItem(item.ref[0], this));
-    } else if (item.type == data::ChunkDataItem::ChunkDataItemType::FIELD) {
-      QString comment;
-      if (item.num_elements > 1) {
-        comment += QString::number(item.num_elements) + " x ";
-      }
-      comment += QString::number(item.repack.to_width) + "b (";
-      if (item.repack.endian == veles::data::Endian::LITTLE) {
-        comment += "LE";
-      } else {
-        comment += "BE";
-      }
-      comment += ")";
-      newChildren.append(new FileBlobItem(item.name,
-                                          item.raw_value.toString(16), comment,
-                                          item.start, item.end, this));
-    } else if (item.type == data::ChunkDataItem::ChunkDataItemType::SUBBLOB) {
-      auto child = new SimpleFileBlobItem(item.name, "open in new tab", this);
-      child->setIcon(QIcon::fromTheme(":/images/newTab.png"));
-      child->setNewRoot(item.ref[0]);
-      newChildren.append(child);
-    } else {
-      auto child = new SimpleFileBlobItem(item.name, "unsupported", this);
-      child->setIcon(QIcon::fromTheme(":/images/error.ico"));
-      newChildren.append(child);
-    }
+  // If every existing child still matches the corresponding entry in the new
+  // response (same identity, same order), only append the new tail.  This
+  // keeps already-subscribed SubchunkFileBlobItems alive and prevents the
+  // "loading" flash that would occur if they were destroyed and recreated.
+  bool appendOnly = (children_.size() <= static_cast<int>(items.size()));
+  for (int i = 0; i < children_.size() && appendOnly; ++i) {
+    if (!childMatchesItem(children_[i], items[i])) appendOnly = false;
   }
 
+  if (appendOnly) {
+    QList<FileBlobItem*> newItems;
+    for (int i = children_.size(); i < static_cast<int>(items.size()); ++i) {
+      newItems.append(makeChildItem(items[i], this));
+    }
+    if (!newItems.empty()) addChildren(newItems);
+    return;
+  }
+
+  // Fallback: items were removed or reordered (uncommon for parsers).
+  FileBlobItem::removeOldChildren();
+  QList<FileBlobItem*> newChildren;
+  newChildren.reserve(items.size());
+  for (const auto& item : items) {
+    newChildren.append(makeChildItem(item, this));
+  }
   addChildren(newChildren);
 }
 

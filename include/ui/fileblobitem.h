@@ -76,13 +76,14 @@ class FileBlobItem : public QObject {
 
  protected slots:
   virtual void insertingChildrenHandle(FileBlobItem* item, bool before,
-                                       int count);
-  virtual void removingChildrenHandle(FileBlobItem* item, bool before);
+                                       int first, int last);
+  virtual void removingChildrenHandle(FileBlobItem* item, bool before,
+                                      int first, int last);
   virtual void dataUpdatedHandle(FileBlobItem* item);
 
  signals:
-  void insertingChildren(FileBlobItem* item, bool before, int count);
-  void removingChildren(FileBlobItem* item, bool before);
+  void insertingChildren(FileBlobItem* item, bool before, int first, int last);
+  void removingChildren(FileBlobItem* item, bool before, int first, int last);
   void dataUpdated(FileBlobItem* item);
 };
 
